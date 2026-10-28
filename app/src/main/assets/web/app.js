@@ -8,9 +8,10 @@ let groups=[],heights=[0],follow=true,paused=false,pauseCursor=Infinity,clearBef
 let worker=null,workerBusy=false,workerTimer=null,workerFailed=false,pending=[],job=0,revision=0,now=Date.now(),status={},lastUpdate=0;
 let history=read('history',[]),favorites=read('favorites',[]),frozenGroups=null;
 let pendingView=false,appSearchTimer,queryTimer,renderFrame=0;
-let selectingLogs=false,renderDeferred=false,indexDeferred=false;
+let selectingLogs=false,horizontalScrolling=false,horizontalScrollTimer,renderDeferred=false,indexDeferred=false;
+const horizontalOffsets=new Map();
 function hasLogSelection(){const selection=window.getSelection();return !!selection&&!selection.isCollapsed&&selection.rangeCount>0&&selection.getRangeAt(0).intersectsNode($('viewport'));}
-function selectionBlocksRender(){return selectingLogs||hasLogSelection();}
+function selectionBlocksRender(){return selectingLogs||horizontalScrolling||hasLogSelection();}
 function resumeDeferredRender(){
  if(selectionBlocksRender())return;
  if(indexDeferred){indexDeferred=false;renderDeferred=false;indexGroups();}
@@ -42,7 +43,7 @@ function filter(force=false){
  worker.postMessage({id:++job,append:pending.splice(0),query,packages:[...selected],caseSensitive:$('case-sensitive').checked,now,clearBefore,pauseBefore:paused?pauseCursor:null});
  workerTimer=setTimeout(()=>failWorker('过滤执行超时，已终止正则。请简化表达式后重试。'),1500);
 }
-function indexGroups(){if(selectionBlocksRender()){indexDeferred=true;return;}heights=[0];for(const row of groups)heights.push(heights[heights.length-1]+34+20*row.message.split('\n').length);$('virtual-space').style.height=heights[heights.length-1]+'px';$('empty').hidden=groups.length>0;
+function indexGroups(){if(selectionBlocksRender()){indexDeferred=true;return;}heights=[0];for(const row of groups)heights.push(heights[heights.length-1]+50+20*row.message.split('\n').length);$('virtual-space').style.height=heights[heights.length-1]+'px';$('empty').hidden=groups.length>0;
  if(!groups.length){$('empty').querySelector('h2').textContent=records.length?'没有匹配的日志':'等待日志';$('empty').querySelector('p').textContent=records.length?'调整查询、应用范围或清空条件。':'启动手机服务，并允许设备日志访问。';}
  if(follow&&!paused)$('viewport').scrollTop=heights[heights.length-1];scheduleRender();updateStats();}
 function lowerBound(value){let left=0,right=groups.length;while(left<right){const mid=(left+right)>>1;if(heights[mid+1]<value)left=mid+1;else right=mid;}return left;}
@@ -60,9 +61,10 @@ function render(){
   row.append(meta);const message=document.createElement('pre');message.className='log-message';
   const level=document.createElement('span');level.className='level level-'+e.level;level.textContent=e.level+' ';message.append(level);
   const tag=document.createElement('span');tag.className='tag';tag.textContent=e.tag+'  ';message.append(tag,document.createTextNode(e.message));row.append(message);
-  row.onclick=()=>{if(hasLogSelection())return;selectedId=e.id;scheduleRender();};fragment.append(row);
+  row.onclick=()=>{if(hasLogSelection()||horizontalScrolling)return;selectedId=e.id;scheduleRender();};fragment.append(row);
  }
  $('rows').style.transform='translateY('+heights[start]+'px)';$('rows').replaceChildren(fragment);
+ for(const message of $('rows').querySelectorAll('.log-message'))message.scrollLeft=horizontalOffsets.get(message.parentElement.dataset.id)||0;
 }
 function updateStats(){const count=groups.reduce((total,g)=>total+g.lines,0);$('stats').textContent='匹配 '+count.toLocaleString()+' 条 / '+groups.length.toLocaleString()+' 组 · 缓存 '+records.length.toLocaleString()+' 条 · '+(cacheBytes/1048576).toFixed(1)+' MB'+(status.dropped?' · 手机已淘汰 '+status.dropped+' 条':'')+(paused?' · 显示已暂停':'');}
 function appList(){
@@ -90,7 +92,7 @@ async function poll(){
   const response=await fetch(endpoint('/logs',{after:cursor}),{signal:AbortSignal.timeout(6000)});
   if(!response.ok)throw new Error(response.status===403?'链接授权失效，请重新扫码':'HTTP '+response.status);
   const data=await response.json();now=data.now;status=data;lastUpdate=Date.now();
-  if(session!==null&&session!==data.session){records=[];cacheBytes=0;cursor=0;clearBefore=0;pending=[];worker?.terminate();worker=null;workerBusy=false;clearTimeout(workerTimer);groups=[];filter(true);session=data.session;delay=0;return;}
+  if(session!==null&&session!==data.session){records=[];cacheBytes=0;cursor=0;clearBefore=0;pending=[];horizontalOffsets.clear();worker?.terminate();worker=null;workerBusy=false;clearTimeout(workerTimer);groups=[];filter(true);session=data.session;delay=0;return;}
   session=data.session;
   if(data.cursor<cursor){cursor=0;delay=0;return;}
   if(cursor>0&&data.oldest>cursor+1)$('query-error').textContent='缓存已淘汰部分历史日志，已从可用位置继续。';
@@ -132,13 +134,22 @@ $('history').onchange=()=>{if($('history').value){$('query').value=$('history').
 $('save-query').onclick=()=>{const value=$('query').value.trim();if(!value)return;favorites=favorites.includes(value)?favorites.filter(q=>q!==value):[value,...favorites].slice(0,30);persist('favorites',favorites);$('save-query').textContent=favorites.includes(value)?'★':'☆';remember();updateHistory();};
 $('app-search').oninput=()=>{clearTimeout(appSearchTimer);appSearchTimer=setTimeout(appList,100);};$('system-apps').onchange=()=>{persist('systemApps',$('system-apps').checked);appList();};$('refresh-apps').onclick=()=>loadApps(true);$('deselect').onclick=()=>{selected.clear();selectionChanged();};
 $('pause').onclick=()=>{paused=!paused;pauseCursor=paused?cursor:Infinity;frozenGroups=paused?groups:null;$('pause').textContent=paused?'▶ 恢复显示':'Ⅱ 暂停显示';$('pause').classList.toggle('active',paused);filter(true);};
-$('follow').onclick=()=>{follow=true;$('follow').classList.add('active');$('viewport').scrollTop=heights[heights.length-1];};
+$('follow').onclick=()=>{if(hasLogSelection())window.getSelection().removeAllRanges();selectedId=0;follow=true;$('follow').classList.add('active');resumeDeferredRender();$('viewport').scrollTop=heights[heights.length-1];scheduleRender();};
 $('viewport').addEventListener('wheel',()=>{follow=false;$('follow').classList.remove('active');},{passive:true});$('viewport').addEventListener('touchmove',()=>{follow=false;$('follow').classList.remove('active');},{passive:true});$('viewport').addEventListener('scroll',scheduleRender,{passive:true});
+$('viewport').addEventListener('scroll',event=>{
+ const message=event.target;if(!message.classList?.contains('log-message'))return;
+ const id=message.parentElement.dataset.id,offset=message.scrollLeft;
+ if((horizontalOffsets.get(id)||0)===offset)return;
+ if(offset)horizontalOffsets.set(id,offset);else horizontalOffsets.delete(id);
+ while(horizontalOffsets.size>50000)horizontalOffsets.delete(horizontalOffsets.keys().next().value);
+ horizontalScrolling=true;follow=false;$('follow').classList.remove('active');
+ clearTimeout(horizontalScrollTimer);horizontalScrollTimer=setTimeout(()=>{horizontalScrolling=false;resumeDeferredRender();},350);
+},true);
 $('viewport').addEventListener('pointerdown',()=>{selectingLogs=true;});
 window.addEventListener('pointerup',()=>{if(selectingLogs){selectingLogs=false;setTimeout(resumeDeferredRender,0);}});
 window.addEventListener('pointercancel',()=>{selectingLogs=false;setTimeout(resumeDeferredRender,0);});
 document.addEventListener('selectionchange',()=>{if(hasLogSelection()){follow=false;$('follow').classList.remove('active');}else resumeDeferredRender();});
-$('clear').onclick=()=>{clearBefore=cursor;selectedId=0;groups=[];indexGroups();filter(true);};
+$('clear').onclick=()=>{clearBefore=cursor;selectedId=0;horizontalOffsets.clear();groups=[];indexGroups();filter(true);};
 $('context').onclick=()=>{const chosen=selectedId||groups[groups.length-1]?.id,index=records.findIndex(e=>e.id===chosen);if(index<0){$('query-error').textContent='请选择缓存内的一条日志';return;}$('context-content').textContent=records.slice(Math.max(0,index-10),index+21).map(e=>e.line).join('\n');$('context-dialog').showModal();};$('close-context').onclick=()=>$('context-dialog').close();
 let exportUrl='';
 $('export').onclick=()=>{
