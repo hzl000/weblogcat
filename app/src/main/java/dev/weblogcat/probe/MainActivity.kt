@@ -104,6 +104,12 @@ class MainActivity : ComponentActivity() {
                 PageCard {
                     Text("浏览器连接", fontSize = 18.sp, fontWeight = FontWeight.SemiBold); Text("在同一网络的设备上扫码，或复制链接打开。", color = Muted, fontSize = 13.sp)
                     Box { TextButton(onClick = { expanded = true }, enabled = addresses.isNotEmpty()) { Text(address.ifEmpty { "没有可用网络" }) }; DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) { addresses.forEach { item -> DropdownMenuItem(text = { Text(item) }, onClick = { selected = item; expanded = false }) } } }
+                    if (url.isNotEmpty() && service != null) {
+                        val access = service.accessCode.current()
+                        Text("网页访问验证码", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                        Text(access.code ?: "暂时锁定", fontSize = 26.sp, fontWeight = FontWeight.Bold, color = Blue, letterSpacing = 3.sp)
+                        Text(if (access.locked) "错误次数过多，请等待 ${access.remainingSeconds} 秒后重试。" else "在网页输入验证码。${access.remainingSeconds} 秒后更新，使用后立即失效。", color = Muted, fontSize = 13.sp)
+                    }
                     if (qr != null) Image(qr.asImageBitmap(), contentDescription = "扫码打开日志网页", modifier = Modifier.size(220.dp).align(Alignment.CenterHorizontally).background(Color.White))
                     SelectionContainer { Text(url.ifEmpty { "启动服务后显示访问链接" }, color = Muted, fontSize = 13.sp) }
                     FilledTonalButton(onClick = { if (url.isNotEmpty()) { getSystemService(ClipboardManager::class.java).setPrimaryClip(ClipData.newPlainText("WebLogcat", url)); Toast.makeText(this@MainActivity, "链接已复制", Toast.LENGTH_SHORT).show() } else Toast.makeText(this@MainActivity, "请先启动服务", Toast.LENGTH_SHORT).show() }, modifier = Modifier.fillMaxWidth()) { Text("复制访问链接") }

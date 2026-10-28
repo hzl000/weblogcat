@@ -42,6 +42,7 @@ class LogService : Service() {
     @Volatile private var lastLogAt = 0L
     @Volatile private var lastForeignAt = 0L
     @Volatile private var catalog: AppCatalog? = null
+    val accessCode = AccessCode()
     override fun onCreate() {
         super.onCreate()
         getSystemService(NotificationManager::class.java).createNotificationChannel(NotificationChannel("logs", "日志采集", NotificationManager.IMPORTANCE_LOW))
@@ -142,12 +143,37 @@ class LogService : Service() {
             if (!hasReadLogs(this)) { stopSelf(); return }
             s.soTimeout = 3000; val request = readLine(s.getInputStream()) ?: return
             val parts = request.split(" "); if (parts.size != 3) return
-            var headerBytes = 0
-            while (true) { val header = readLine(s.getInputStream()) ?: break; if (header.isEmpty()) break; headerBytes += header.length; if (headerBytes > 16384) return }
+            var headerBytes = 0; var contentLength: Int? = null; var contentType = ""
+            while (true) {
+                val header = readLine(s.getInputStream()) ?: break
+                if (header.isEmpty()) break
+                headerBytes += header.length; if (headerBytes > 16384) return
+                val name = header.substringBefore(':').trim().lowercase(java.util.Locale.ROOT)
+                val value = header.substringAfter(':', "").trim()
+                if (name == "content-length") { if (contentLength != null) return; contentLength = value.toIntOrNull() ?: return }
+                if (name == "content-type") contentType = value.substringBefore(';').trim().lowercase(java.util.Locale.ROOT)
+            }
             val uri = URI.create(parts[1]); val query = HashMap<String, String>()
             uri.rawQuery?.split("&")?.forEach { pair -> val kv = pair.split("=", limit = 2); query[URLDecoder.decode(kv[0], "UTF-8")] = if (kv.size == 2) URLDecoder.decode(kv[1], "UTF-8") else "" }
-            if (!MessageDigest.isEqual(query.getOrDefault("token", "").toByteArray(), token(this).toByteArray())) { send(s, 403, "text/plain", "访问链接无效".toByteArray()); return }
-            val path = uri.path; var type = "application/json"
+            val path = uri.path
+            if (parts[0] == "POST" && path == "/authorize") {
+                val length = contentLength ?: 0
+                if (contentType != "application/json" || length !in 1..256) { send(s, 400, "text/plain", "请求无效".toByteArray()); return }
+                val bytes = ByteArray(length); var read = 0
+                while (read < length) { val count = s.getInputStream().read(bytes, read, length - read); if (count < 0) return; read += count }
+                val candidate = try { JSONObject(String(bytes, Charsets.UTF_8)).optString("code", "") } catch (_: Exception) { "" }
+                if (!candidate.matches(Regex("[0-9]{6}"))) { send(s, 400, "text/plain", "验证码格式无效".toByteArray()); return }
+                val decision = accessCode.verify(candidate)
+                val result = JSONObject().put("status", decision.name.lowercase(java.util.Locale.ROOT))
+                if (decision == AccessCode.Result.APPROVED) result.put("token", token(this))
+                send(s, 200, "application/json", result.toString().toByteArray()); return
+            }
+            if (!MessageDigest.isEqual(query.getOrDefault("token", "").toByteArray(), token(this).toByteArray())) {
+                if (parts[0] == "GET" && (path == "/" || path == "/index.html")) send(s, 200, "text/html", assets.open("web/auth.html").use { it.readBytes() })
+                else send(s, 403, "text/plain", "访问链接无效".toByteArray())
+                return
+            }
+            var type = "application/json"
             val body = when {
                 path == "/restart" && parts[0] == "POST" -> { handleCommand(port, true); "{}".toByteArray() }
                 parts[0] != "GET" -> { send(s, 405, "text/plain", byteArrayOf()); return }

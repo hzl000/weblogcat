@@ -2,6 +2,7 @@ package dev.weblogcat.probe
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,11 @@ class SettingsActivity : ComponentActivity() {
     @Composable private fun Settings() {
         var port by remember { mutableStateOf(LogService.configuredPort(this).toString()) }
         var error by remember { mutableStateOf(false) }
+        val version = remember {
+            val info = packageManager.getPackageInfo(packageName, 0)
+            val code = if (Build.VERSION.SDK_INT >= 28) info.longVersionCode else @Suppress("DEPRECATION") info.versionCode.toLong()
+            "${info.versionName ?: "未知"} ($code)"
+        }
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).windowInsetsPadding(WindowInsets.safeDrawing).padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 PageHeader("设置", "管理服务连接与日志访问权限") { finish() }
@@ -41,6 +47,10 @@ class SettingsActivity : ComponentActivity() {
                     FilledTonalButton(onClick = { startActivity(Intent(this@SettingsActivity, WirelessSetupActivity::class.java)) }, modifier = Modifier.fillMaxWidth()) { Text("无线调试授权") }
                     FilledTonalButton(onClick = { if (!LogService.hasReadLogs(this@SettingsActivity)) Toast.makeText(this@SettingsActivity, "请先授予 READ_LOGS 权限", Toast.LENGTH_LONG).show() else { startForegroundService(Intent(this@SettingsActivity, LogService::class.java).setAction("restart").putExtra("port", LogService.configuredPort(this@SettingsActivity))); Toast.makeText(this@SettingsActivity, "正在请求日志访问", Toast.LENGTH_SHORT).show() } }, modifier = Modifier.fillMaxWidth()) { Text("重新请求日志访问") }
                     androidx.compose.foundation.text.selection.SelectionContainer { Text("电脑授权命令\nadb shell pm grant $packageName android.permission.READ_LOGS", fontSize = 12.sp) }
+                }
+                PageCard {
+                    Text("关于", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                    Text("当前版本  $version", fontSize = 14.sp)
                 }
             }
         }
