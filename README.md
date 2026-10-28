@@ -53,3 +53,9 @@ node --test tests/*.test.cjs
 `tests/fixture/` 是独立的日志测试源 APK，不打入产品 APK。可构建 `:fixture:assembleDebug` 验证主进程、远程进程、重启归属、等级和堆栈。`scripts/native_ui.py` 用最新 UI 节点定位端口控件；`scripts/stress_probe.py` 从调试设备读取当前服务配置，不硬编码访问 token。
 
 本次功能验收见 [0.2 验证报告](evidence/RESULTS-v02.md)。早期 READ_LOGS 可行性验证保留在 [初始报告](evidence/RESULTS.md)。
+
+## 自动构建与下载
+
+推送到 `main` 后，GitHub Actions 会运行 Android 单元测试、编译 Debug APK，并创建带独立 `build-运行编号-重试编号` 标签的预发布 Release。也可在 Actions 中手动运行 `Build APK and publish Release`。
+
+从 [Releases](https://github.com/hzl000/weblogcat/releases) 下载 APK 和 `SHA256SUMS.txt`。当前使用默认调试签名，尚未配置正式发布签名；不同构建可能需要先卸载旧版本再安装，卸载会清除应用数据。
