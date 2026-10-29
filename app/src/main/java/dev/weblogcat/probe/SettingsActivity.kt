@@ -6,18 +6,24 @@ import android.os.Build
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CancellationException
 
 class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState); setContent { AppTheme { Settings() } } }
@@ -25,6 +31,24 @@ class SettingsActivity : ComponentActivity() {
         val scope = rememberCoroutineScope()
         var port by remember { mutableStateOf(LogService.configuredPort(this).toString()) }
         var error by remember { mutableStateOf(false) }
+        var shareOpen by remember { mutableStateOf(false) }
+        var shareLoading by remember { mutableStateOf(false) }
+        var shareError by remember { mutableStateOf("") }
+        var shareRelease by remember { mutableStateOf<UpdateRelease?>(null) }
+        var shareQr by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
+        LaunchedEffect(shareOpen) {
+            if (shareOpen) {
+                shareLoading = true; shareError = ""; shareRelease = null; shareQr = null
+                try {
+                    val latest = UpdateChecker.latestRelease()
+                    val url = latest.apkUrl ?: throw IllegalStateException("最新版本没有 APK 附件")
+                    shareQr = withContext(Dispatchers.Default) { apkQrBitmap(url) }
+                    shareRelease = latest
+                } catch (cancel: CancellationException) { throw cancel }
+                catch (error: Exception) { shareError = if (error is IllegalStateException && error.message == "最新版本没有 APK 附件") error.message.orEmpty() else "获取下载链接失败，请检查网络后重试" }
+                finally { shareLoading = false }
+            }
+        }
         val version = remember {
             val info = packageManager.getPackageInfo(packageName, 0)
             val code = if (Build.VERSION.SDK_INT >= 28) info.longVersionCode else @Suppress("DEPRECATION") info.versionCode.toLong()
@@ -53,6 +77,7 @@ class SettingsActivity : ComponentActivity() {
                 PageCard {
                     Text("关于", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     Text("当前版本  $version", fontSize = 14.sp)
+                    FilledTonalButton(onClick = { shareOpen = true }, modifier = Modifier.fillMaxWidth()) { Text("分享应用") }
                     FilledTonalButton(onClick = { scope.launch { UpdateChecker.check(this@SettingsActivity, force = true) } }, enabled = UpdateChecker.state !is UpdateState.Checking, modifier = Modifier.fillMaxWidth()) {
                         Text(if (UpdateChecker.state is UpdateState.Checking) "正在检查…" else "检查更新")
                     }
@@ -71,5 +96,30 @@ class SettingsActivity : ComponentActivity() {
                 }
             }
         }
+        if (shareOpen) AlertDialog(
+            onDismissRequest = { shareOpen = false },
+            title = { Text("分享应用") },
+            text = {
+                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
+                    when {
+                        shareLoading -> Text("正在获取最新下载链接…")
+                        shareError.isNotEmpty() -> Text(shareError, color = MaterialTheme.colorScheme.error)
+                        shareRelease != null && shareQr != null -> {
+                            Text("最新版本 ${shareRelease!!.version} · 扫码下载 APK")
+                            Image(shareQr!!.asImageBitmap(), contentDescription = "APK 下载二维码", modifier = Modifier.size(220.dp))
+                            FilledTonalButton(onClick = {
+                                try { shareApkQr(this@SettingsActivity, shareQr!!) }
+                                catch (_: Exception) { Toast.makeText(this@SettingsActivity, "无法分享二维码，请重试", Toast.LENGTH_SHORT).show() }
+                            }, modifier = Modifier.fillMaxWidth()) { Text("分享二维码") }
+                            FilledTonalButton(onClick = {
+                                try { shareApkLink(this@SettingsActivity, shareRelease!!.apkUrl!!) }
+                                catch (_: Exception) { Toast.makeText(this@SettingsActivity, "无法分享链接，请重试", Toast.LENGTH_SHORT).show() }
+                            }, modifier = Modifier.fillMaxWidth()) { Text("分享下载链接") }
+                        }
+                    }
+                }
+            },
+            confirmButton = { TextButton(onClick = { shareOpen = false }) { Text("关闭") } }
+        )
     }
 }

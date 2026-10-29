@@ -50,6 +50,8 @@ internal object UpdateChecker {
     var state: UpdateState by mutableStateOf(UpdateState.Idle)
         private set
 
+    suspend fun latestRelease(): UpdateRelease = withContext(Dispatchers.IO) { fetchRelease() }
+
     suspend fun check(context: Context, force: Boolean = false) = mutex.withLock {
         if (!force && lastSuccess != 0L && SystemClock.elapsedRealtime() - lastSuccess < CACHE_MS) return@withLock
         val version = context.packageManager.getPackageInfo(context.packageName, 0).versionName
