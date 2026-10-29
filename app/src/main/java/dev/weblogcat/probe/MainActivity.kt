@@ -74,6 +74,7 @@ class MainActivity : ComponentActivity() {
         var tick by remember { mutableIntStateOf(0) }
         var selected by remember { mutableStateOf("") }
         var expanded by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) { UpdateChecker.check(this@MainActivity) }
         LaunchedEffect(Unit) { while (true) { tick++; delay(1000) } }
         @Suppress("UNUSED_EXPRESSION") tick
         val service = LogService.active
@@ -93,7 +94,16 @@ class MainActivity : ComponentActivity() {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).windowInsetsPadding(WindowInsets.safeDrawing).padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) { Text("DEVICE LOG CONSOLE", fontSize = 11.sp, color = Muted, letterSpacing = 1.sp); Text("WebLogcat", fontSize = 28.sp, fontWeight = FontWeight.Bold); Text("在浏览器里，查看手机实时日志", color = Muted, fontSize = 14.sp) }
+                    Column(Modifier.weight(1f)) {
+                        Text("DEVICE LOG CONSOLE", fontSize = 11.sp, color = Muted, letterSpacing = 1.sp)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text("WebLogcat", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+                            (UpdateChecker.state as? UpdateState.Available)?.let { update ->
+                                TextButton(onClick = { openUpdateUrl(this@MainActivity, update.release.pageUrl) }) { Text("NEW", fontSize = 12.sp, fontWeight = FontWeight.Bold) }
+                            }
+                        }
+                        Text("在浏览器里，查看手机实时日志", color = Muted, fontSize = 14.sp)
+                    }
                     FilledTonalButton(onClick = { startActivity(Intent(this@MainActivity, SettingsActivity::class.java)) }) { Text("设置") }
                 }
                 PageCard {

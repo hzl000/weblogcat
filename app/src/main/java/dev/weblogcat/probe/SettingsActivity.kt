@@ -17,10 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
 
 class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) { super.onCreate(savedInstanceState); setContent { AppTheme { Settings() } } }
     @Composable private fun Settings() {
+        val scope = rememberCoroutineScope()
         var port by remember { mutableStateOf(LogService.configuredPort(this).toString()) }
         var error by remember { mutableStateOf(false) }
         val version = remember {
@@ -51,6 +53,21 @@ class SettingsActivity : ComponentActivity() {
                 PageCard {
                     Text("关于", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                     Text("当前版本  $version", fontSize = 14.sp)
+                    FilledTonalButton(onClick = { scope.launch { UpdateChecker.check(this@SettingsActivity, force = true) } }, enabled = UpdateChecker.state !is UpdateState.Checking, modifier = Modifier.fillMaxWidth()) {
+                        Text(if (UpdateChecker.state is UpdateState.Checking) "正在检查…" else "检查更新")
+                    }
+                    when (val update = UpdateChecker.state) {
+                        UpdateState.Current -> Text("已是最新版本", fontSize = 13.sp)
+                        UpdateState.Failed -> Text("检查失败，请检查网络后重试", fontSize = 13.sp, color = MaterialTheme.colorScheme.error)
+                        is UpdateState.Available -> {
+                            Text("发现新版本 ${update.release.version}", fontSize = 14.sp)
+                            update.release.apkUrl?.let { apk ->
+                                Button(onClick = { openUpdateUrl(this@SettingsActivity, apk) }, modifier = Modifier.fillMaxWidth()) { Text("下载 APK") }
+                            }
+                            TextButton(onClick = { openUpdateUrl(this@SettingsActivity, update.release.pageUrl) }, modifier = Modifier.fillMaxWidth()) { Text("查看发布说明") }
+                        }
+                        else -> Unit
+                    }
                 }
             }
         }
