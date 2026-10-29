@@ -60,4 +60,4 @@ node --test tests/*.test.cjs
 
 推送到 `main` 后，GitHub Actions 会运行 Android 单元测试并编译 Debug APK。Release 使用 `app/build.gradle.kts` 中的 `versionName` 对应的固定标签（例如 `v0.3.1`）：同一版本的后续构建更新该 Release 的 APK、校验文件和说明；版本号变更后才创建新版本的 Release。也可在 Actions 中手动运行 `Build APK and publish Release`。固定标签指向该版本首次发布的提交，最新 APK 的源码提交以 Release 说明为准。
 
-从 [Releases](https://github.com/hzl000/weblogcat/releases) 下载 APK 和 `SHA256SUMS.txt`。当前使用默认调试签名，尚未配置正式发布签名；不同构建可能需要先卸载旧版本再安装，卸载会清除应用数据。
+从 [Releases](https://github.com/hzl000/weblogcat/releases) 下载 APK 和 `SHA256SUMS.txt`。GitHub Actions 使用固定签名构建 Debug APK；首次从旧调试签名切换时需要卸载旧版本，卸载会清除应用数据。签名密钥需单独安全备份，不能提交到仓库。

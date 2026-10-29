@@ -39,8 +39,30 @@ jobs:
       - name: 配置 Gradle 缓存
         uses: gradle/actions/setup-gradle@v5
 
+      - name: 准备固定签名
+        env:
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.WEBLOGCAT_SIGNING_KEYSTORE }}
+          WEBLOGCAT_SIGNING_PASSWORD: ${{ secrets.WEBLOGCAT_SIGNING_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$SIGNING_KEYSTORE_BASE64" && test -n "$WEBLOGCAT_SIGNING_PASSWORD"
+          printf '%s' "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/weblogcat-signing.jks"
+          chmod 600 "$RUNNER_TEMP/weblogcat-signing.jks"
+          echo "WEBLOGCAT_SIGNING_FILE=$RUNNER_TEMP/weblogcat-signing.jks" >> "$GITHUB_ENV"
+
       - name: 测试并编译可安装的 APK
+        env:
+          WEBLOGCAT_SIGNING_PASSWORD: ${{ secrets.WEBLOGCAT_SIGNING_PASSWORD }}
         run: ./gradlew :app:testDebugUnitTest :app:assembleDebug --no-daemon --stacktrace
+
+      - name: 验证 APK 签名
+        env:
+          WEBLOGCAT_SIGNING_PASSWORD: ${{ secrets.WEBLOGCAT_SIGNING_PASSWORD }}
+        run: |
+          set -euo pipefail
+          expected=$(keytool -exportcert -keystore "$WEBLOGCAT_SIGNING_FILE" -alias weblogcat -storepass:env WEBLOGCAT_SIGNING_PASSWORD | sha256sum | cut -d' ' -f1)
+          actual=$("$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs app/build/outputs/apk/debug/app-debug.apk | sed -n 's/^Signer #1 certificate SHA-256 digest: //p')
+          test -n "$actual" && test "$expected" = "$actual"
 
       - name: 准备发布文件
         id: package
@@ -68,8 +90,7 @@ jobs:
 
           - 源码提交：${GITHUB_SHA}
           - 构建记录：https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
-          - 使用 Android 默认调试签名，未配置正式发布签名。
-          - 不同构建的调试签名可能不同；若无法覆盖安装，需要先卸载旧版本（会清除应用数据）。
+          - 使用固定签名构建 Debug APK；此前使用其他签名的版本需要先卸载（会清除应用数据）。
           - SHA256SUMS.txt 可用于校验 APK 完整性。
           NOTES
 

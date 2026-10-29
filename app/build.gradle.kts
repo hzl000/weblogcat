@@ -3,12 +3,22 @@ android {
  namespace = "dev.weblogcat.probe"
  compileSdk = 36
  buildFeatures { compose = true }
+ val signingFile = System.getenv("WEBLOGCAT_SIGNING_FILE")
+ if (signingFile != null) {
+  val storePasswordValue = requireNotNull(System.getenv("WEBLOGCAT_SIGNING_PASSWORD"))
+  signingConfigs.getByName("debug") {
+   storeFile = file(signingFile)
+   storePassword = storePasswordValue
+   keyAlias = "weblogcat"
+   keyPassword = storePasswordValue
+  }
+ }
  defaultConfig {
   applicationId = "dev.weblogcat.probe"
   minSdk = 26
   targetSdk = 36
-  versionCode = 6
-  versionName = "0.3.3"
+  versionCode = 7
+  versionName = "0.3.4"
  }
  compileOptions {
   sourceCompatibility = JavaVersion.VERSION_17
