@@ -5,3 +5,19 @@ const entry=(id,message,extra={})=>({id,time:1000+id,pid:2,tid:2,uid:10001,packa
 test('匹配堆栈一行仍保留完整组，崩溃组识别',()=>{const call=harness();const r=call({append:[entry(1,'FATAL EXCEPTION: main'),entry(2,'java.lang.IllegalStateException: boom'),entry(3,'    at a.b.C(C.java:1)'),entry(4,'unrelated',{tag:'Other',level:'I'})],query:'message:boom'});assert.equal(r.groups.length,1);assert.equal(r.groups[0].lines,3);assert.match(r.groups[0].message,/FATAL EXCEPTION/);assert.equal(r.groups[0].crash,true);});
 test('应用多选、暂停游标与本地清空',()=>{const call=harness();call({append:[entry(1,'one'),entry(2,'two',{package:'b'}),entry(3,'three',{package:''})]});assert.equal(call({packages:['b']}).groups.length,1);assert.equal(call({pauseBefore:1}).groups.length,1);assert.equal(call({clearBefore:2}).groups.length,1);assert.equal(call({query:'tag:Missing'}).groups.length,0);});
 test('语法错误返回错误而不崩溃',()=>{assert.match(harness()({query:'tag~:"["'}).error,/正则/);});
+test('无关日志淘汰原始缓存后仍保留过滤命中结果',()=>{
+ const call=harness(),query='tag:Target';
+ call({query,append:[entry(1,'one',{tag:'Target'}),entry(2,'two',{tag:'Target'})]});
+ call({query,append:Array.from({length:50001},(_,i)=>entry(i+3,'noise',{tag:'Noise'}))});
+ assert.deepEqual(Array.from(call({query}).groups,g=>g.id),[1,2]);
+ call({query:'tag:Other'});
+ assert.equal(call({query}).groups.length,0);
+});
+test('暂停期间继续保留新匹配，清空和匹配缓存上限生效',()=>{
+ const call=harness(),query='tag:Target';
+ call({query,append:[entry(1,'old',{tag:'Target',bytes:20*1024*1024})]});
+ const paused=call({query,pauseBefore:1,append:[entry(2,'new',{tag:'Target',bytes:20*1024*1024})]});
+ assert.equal(paused.groups.length,0);
+ assert.deepEqual(Array.from(call({query}).groups,g=>g.id),[2]);
+ assert.equal(call({query,clearBefore:2}).groups.length,0);
+});

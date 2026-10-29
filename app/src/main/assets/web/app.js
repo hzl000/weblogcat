@@ -4,10 +4,10 @@ const $=id=>document.getElementById(id),auth=location.search, token=new URLSearc
 const endpoint=(path,params={})=>path+'?'+new URLSearchParams({token,...params});
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
 let selected=new Set(read('packages',[])), apps=[],records=[],cacheBytes=0,cursor=0,session=null;
-let groups=[],heights=[0],follow=true,paused=false,pauseCursor=Infinity,clearBefore=0,selectedId=0;
+let groups=[],indexedGroups=[],heights=[0],follow=true,paused=false,pauseCursor=Infinity,clearBefore=0,selectedId=0;
 let worker=null,workerBusy=false,workerTimer=null,workerFailed=false,pending=[],job=0,revision=0,now=Date.now(),status={},lastUpdate=0;
 let history=read('history',[]),favorites=read('favorites',[]),frozenGroups=null;
-let pendingView=false,appSearchTimer,queryTimer,renderFrame=0;
+let pendingView=false,appSearchTimer,queryTimer,renderFrame=0,retainedCount=0,retainedBytes=0;
 let selectingLogs=false,horizontalScrolling=false,horizontalScrollTimer,renderDeferred=false,indexDeferred=false;
 const horizontalOffsets=new Map();
 function hasLogSelection(){const selection=window.getSelection();return !!selection&&!selection.isCollapsed&&selection.rangeCount>0&&selection.getRangeAt(0).intersectsNode($('viewport'));}
@@ -25,7 +25,7 @@ function workerStart(){
   if(data.id!==job)return;
   if(data.error){$('query-error').textContent=data.error;}
   else if(data.revision===undefined && workerRevision===revision){
-   $('query-error').textContent='';
+   $('query-error').textContent='';retainedCount=data.retainedCount||0;retainedBytes=data.retainedBytes||0;
    if(!paused||pendingView){groups=data.groups;frozenGroups=paused?groups:null;pendingView=false;indexGroups();}
   }
   updateStats();if(pending.length||workerRevision!==revision)filter();
@@ -43,10 +43,22 @@ function filter(force=false){
  worker.postMessage({id:++job,append:pending.splice(0),query,packages:[...selected],caseSensitive:$('case-sensitive').checked,now,clearBefore,pauseBefore:paused?pauseCursor:null});
  workerTimer=setTimeout(()=>failWorker('过滤执行超时，已终止正则。请简化表达式后重试。'),1500);
 }
-function indexGroups(){if(selectionBlocksRender()){indexDeferred=true;return;}heights=[0];for(const row of groups)heights.push(heights[heights.length-1]+50+20*row.message.split('\n').length);$('virtual-space').style.height=heights[heights.length-1]+'px';$('empty').hidden=groups.length>0;
+function indexGroups(){if(selectionBlocksRender()){indexDeferred=true;return;}
+ const view=$('viewport');let anchor=null;
+ if(!follow&&indexedGroups.length){
+  const index=Math.min(lowerBound(view.scrollTop,indexedGroups.length),indexedGroups.length-1);
+  anchor={id:indexedGroups[index].id,offset:view.scrollTop-heights[index]};
+ }
+ indexedGroups=groups;heights=[0];for(const row of groups)heights.push(heights[heights.length-1]+50+20*row.message.split('\n').length);$('virtual-space').style.height=heights[heights.length-1]+'px';$('empty').hidden=groups.length>0;
  if(!groups.length){$('empty').querySelector('h2').textContent=records.length?'没有匹配的日志':'等待日志';$('empty').querySelector('p').textContent=records.length?'调整查询、应用范围或清空条件。':'启动手机服务，并允许设备日志访问。';}
- if(follow&&!paused)$('viewport').scrollTop=heights[heights.length-1];scheduleRender();updateStats();}
-function lowerBound(value){let left=0,right=groups.length;while(left<right){const mid=(left+right)>>1;if(heights[mid+1]<value)left=mid+1;else right=mid;}return left;}
+ if(follow&&!paused)view.scrollTop=heights[heights.length-1];
+ else if(anchor){
+  const index=groups.findIndex(row=>row.id===anchor.id||row.ids.includes(anchor.id));
+  if(index>=0)view.scrollTop=heights[index]+anchor.offset;
+  else if(groups.length&&anchor.id<groups[0].id){view.scrollTop=0;$('reader-status').textContent='正在查看的日志已被淘汰';}
+ }
+ scheduleRender();updateStats();}
+function lowerBound(value,length=groups.length){let left=0,right=length;while(left<right){const mid=(left+right)>>1;if(heights[mid+1]<value)left=mid+1;else right=mid;}return left;}
 function scheduleRender(){if(selectionBlocksRender()){renderDeferred=true;return;}if(renderFrame)return;renderFrame=requestAnimationFrame(()=>{renderFrame=0;if(selectionBlocksRender()){renderDeferred=true;return;}render();});}
 function render(){
  const view=$('viewport'),start=Math.max(0,lowerBound(view.scrollTop)-5),end=Math.min(groups.length,lowerBound(view.scrollTop+view.clientHeight)+8);
@@ -66,7 +78,7 @@ function render(){
  $('rows').style.transform='translateY('+heights[start]+'px)';$('rows').replaceChildren(fragment);
  for(const message of $('rows').querySelectorAll('.log-message'))message.scrollLeft=horizontalOffsets.get(message.parentElement.dataset.id)||0;
 }
-function updateStats(){const count=groups.reduce((total,g)=>total+g.lines,0);$('stats').textContent='匹配 '+count.toLocaleString()+' 条 / '+groups.length.toLocaleString()+' 组 · 缓存 '+records.length.toLocaleString()+' 条 · '+(cacheBytes/1048576).toFixed(1)+' MB'+(status.dropped?' · 手机已淘汰 '+status.dropped+' 条':'')+(paused?' · 显示已暂停':'');}
+function updateStats(){const count=groups.reduce((total,g)=>total+g.lines,0);$('stats').textContent='匹配 '+count.toLocaleString()+' 条 / '+groups.length.toLocaleString()+' 组 · 缓存 '+records.length.toLocaleString()+' 条 · '+(cacheBytes/1048576).toFixed(1)+' MB'+(retainedCount?' · 筛选保留 '+retainedCount.toLocaleString()+' 条 · '+(retainedBytes/1048576).toFixed(1)+' MB':'')+(status.dropped?' · 手机已淘汰 '+status.dropped+' 条':'')+(paused?' · 显示已暂停':'');}
 function appList(){
  const search=$('app-search').value.toLocaleLowerCase(),showSystem=$('system-apps').checked;
  const visible=apps.filter(a=>(showSystem||!a.system||selected.has(a.package))&&(!search||(a.name+' '+a.package).toLocaleLowerCase().includes(search)));
@@ -145,7 +157,8 @@ $('viewport').addEventListener('scroll',event=>{
  horizontalScrolling=true;follow=false;$('follow').classList.remove('active');
  clearTimeout(horizontalScrollTimer);horizontalScrollTimer=setTimeout(()=>{horizontalScrolling=false;resumeDeferredRender();},350);
 },true);
-$('viewport').addEventListener('pointerdown',()=>{selectingLogs=true;});
+$('viewport').addEventListener('pointerdown',event=>{if(event.target===$('viewport')){follow=false;$('follow').classList.remove('active');}selectingLogs=true;});
+$('viewport').addEventListener('keydown',event=>{if(['ArrowUp','ArrowDown','PageUp','PageDown','Home','End',' '].includes(event.key)){follow=false;$('follow').classList.remove('active');}});
 window.addEventListener('pointerup',()=>{if(selectingLogs){selectingLogs=false;setTimeout(resumeDeferredRender,0);}});
 window.addEventListener('pointercancel',()=>{selectingLogs=false;setTimeout(resumeDeferredRender,0);});
 document.addEventListener('selectionchange',()=>{if(hasLogSelection()){follow=false;$('follow').classList.remove('active');}else resumeDeferredRender();});

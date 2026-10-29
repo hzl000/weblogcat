@@ -8,8 +8,13 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
 jobs:
   release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -42,7 +47,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          tag="build-${GITHUB_RUN_NUMBER}-${GITHUB_RUN_ATTEMPT}"
+          mapfile -t versions < <(sed -nE 's/^[[:space:]]*versionName[[:space:]]*=[[:space:]]*"([^"]+)"[[:space:]]*$/\1/p' app/build.gradle.kts)
+          if [[ ${#versions[@]} -ne 1 ]]; then
+            echo '无法唯一确定 versionName' >&2
+            exit 1
+          fi
+          if [[ ! ${versions[0]} =~ ^[0-9A-Za-z][0-9A-Za-z._-]*$ ]]; then
+            echo 'versionName 不能用于发布标签' >&2
+            exit 1
+          fi
+          tag="v${versions[0]}"
+          git check-ref-format "refs/tags/${tag}"
           apk="weblogcat-${tag}-debug.apk"
           mkdir -p dist
           cp app/build/outputs/apk/debug/app-debug.apk "dist/${apk}"
@@ -64,9 +79,17 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RELEASE_TAG: ${{ steps.package.outputs.tag }}
         run: |
-          gh release create "$RELEASE_TAG" \
-            dist/*.apk dist/SHA256SUMS.txt \
-            --target "$GITHUB_SHA" \
-            --title "WebLogcat ${RELEASE_TAG} (Debug)" \
-            --notes-file dist/RELEASE_NOTES.md \
-            --prerelease
+          set -euo pipefail
+          if gh api "repos/${GH_REPO}/releases/tags/${RELEASE_TAG}" >/dev/null 2>dist/release-error.txt; then
+            gh release upload "$RELEASE_TAG" dist/*.apk dist/SHA256SUMS.txt --clobber
+            gh release edit "$RELEASE_TAG" --title "WebLogcat ${RELEASE_TAG} (Debug)" --notes-file dist/RELEASE_NOTES.md --prerelease=false
+          elif grep -q '(HTTP 404)' dist/release-error.txt; then
+            gh release create "$RELEASE_TAG" \
+              dist/*.apk dist/SHA256SUMS.txt \
+              --target "$GITHUB_SHA" \
+              --title "WebLogcat ${RELEASE_TAG} (Debug)" \
+              --notes-file dist/RELEASE_NOTES.md
+          else
+            cat dist/release-error.txt >&2
+            exit 1
+          fi
