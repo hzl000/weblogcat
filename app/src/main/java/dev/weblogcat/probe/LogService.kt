@@ -187,8 +187,8 @@ class LogService : Service() {
                 }
                 else -> {
                     val file = if (path == "/") "index.html" else path.substring(1)
-                    if (file !in setOf("index.html", "app.js", "query.js", "filter-worker.js", "style.css")) { send(s, 404, "text/plain", byteArrayOf()); return }
-                    type = if (file.endsWith(".css")) "text/css" else if (file.endsWith(".js")) "text/javascript" else "text/html"
+                    if (file !in setOf("index.html", "app.js", "query.js", "filter-worker.js", "style.css", "projects.json")) { send(s, 404, "text/plain", byteArrayOf()); return }
+                    type = when { file.endsWith(".css") -> "text/css"; file.endsWith(".js") -> "text/javascript"; file.endsWith(".json") -> "application/json"; else -> "text/html" }
                     assets.open("web/$file").use { it.readBytes() }
                 }
             }

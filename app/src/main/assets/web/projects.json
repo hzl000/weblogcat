@@ -1,0 +1,23 @@
+[
+  {"code":"M360","package":"com.blazeshield.speedapp","tags":[{"type":"广告","tag":"AdInstance"},{"type":"通知","tag":"AppFAController"}]},
+  {"code":"M360B","package":"com.cleanbot.master.manager","tags":[{"type":"广告","tag":"AdInstance"},{"type":"通知","tag":"AppFAController"}]},
+  {"code":"M361","package":"com.junkfiles.cleaner","tags":[{"type":"广告","tag":"ad_tag"},{"type":"通知","tag":"notify_tag"}]},
+  {"code":"M361B","package":"com.cleanerpro.easyphone","tags":[{"type":"广告","tag":"ad_tag"},{"type":"通知","tag":"notify_tag"}]},
+  {"code":"M363","package":"com.brisksignal.easyproxyapp","tags":[{"type":"广告","tag":"tag_ads"},{"type":"广告","tag":"AdCallbackImp"},{"type":"通知","tag":"notify_tag"},{"type":"埋点","tag":"ad_sdk"},{"type":"埋点","tag":"AdCallbackImp"},{"type":"埋点","tag":"app_report"}]},
+  {"code":"M363B","package":"com.pureclean.smartfile.master","tags":[{"type":"广告","tag":"tag_ads"},{"type":"广告","tag":"AdCallbackImp"},{"type":"通知","tag":"notify_tag"},{"type":"埋点","tag":"app_report"}]},
+  {"code":"M364","package":"com.phonesweep.cleanmanager","tags":[{"type":"广告","tag":"AdTag"},{"type":"通知","tag":"SendNoticeTag"}]},
+  {"code":"M365","package":"com.freshpro.cleaner.photo.manage","tags":[{"type":"广告","tag":"MSLWAdPlacementManager"},{"type":"通知","tag":"MslwSystemEventMonitorUtils"},{"type":"埋点","tag":"AdjustAnalytics"}]},
+  {"code":"M366","package":"com.violetvigor.netspeed","tags":[{"type":"广告","tag":"ad_manager"},{"type":"通知","tag":"notification_tag"}]},
+  {"code":"M366C","package":"com.onetap.tool.appandroid","tags":[{"type":"广告","tag":"AdCallbackImp"},{"type":"通知","tag":"notification_tag"},{"type":"埋点","tag":"report_tag"},{"type":"埋点","tag":"all_report"}]},
+  {"code":"M368","package":"com.planetarynetmeter.speedapp","tags":[{"type":"广告","tag":"ToponController"},{"type":"通知","tag":"NotifySender"}]},
+  {"code":"M368B","package":"com.swiftclean.phone.managerpro","tags":[{"type":"广告","tag":"ToponController"},{"type":"通知","tag":"NotifySender"}]},
+  {"code":"M369","package":"com.crfastpro.pulse.utility","tags":[{"type":"广告","tag":"MSLJAdPlacementManager"},{"type":"通知","tag":"MsljSystemEventMonitorUtils"},{"type":"埋点","tag":"eISQmMV"}]},
+  {"code":"M370","package":"com.quickclean.phonecleaner","tags":[{"type":"广告","tag":"MaxAdPlacementManager"},{"type":"通知","tag":"SystemEventMonitor"}]},
+  {"code":"M371","package":"com.spaceace.file.organizer","tags":[{"type":"广告","tag":"ad_log_tag"}]},
+  {"code":"M372","package":"com.pure.spacesweeper","tags":[{"type":"广告","tag":"powerad"},{"type":"通知","tag":"debugLog"}]},
+  {"code":"M373","package":"com.deepclear.boost.cleaner","tags":[{"type":"广告","tag":"DeppAds"},{"type":"通知","tag":"DeppClear"},{"type":"埋点","tag":"DeppClear_report"}]},
+  {"code":"M374","package":"com.liftsweep.phone.cleaner.app","tags":[{"type":"广告","tag":"Solus_AD"},{"type":"通知","tag":"Solus_TAG"},{"type":"埋点","tag":"Solus_Report"}]},
+  {"code":"M375","package":"com.vortex.sweep.easycleaner.pro","tags":[{"type":"广告","tag":"Z1"},{"type":"通知","tag":"Z0"}]},
+  {"code":"M376","package":"com.expert.phoneclean.fastclean","tags":[{"type":"广告","tag":"Clean_AD"},{"type":"通知","tag":"Clean_TAG"}]},
+  {"code":"M377","package":"com.ace.sweepclean.spacecleaner","tags":[{"type":"广告","tag":"ad_tag"},{"type":"通知","tag":"d_tag"},{"type":"埋点","tag":"m_tag"}]}
+]
