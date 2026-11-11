@@ -60,23 +60,28 @@ function indexGroups(){if(selectionBlocksRender()){indexDeferred=true;return;}
  scheduleRender();updateStats();}
 function lowerBound(value,length=groups.length){let left=0,right=length;while(left<right){const mid=(left+right)>>1;if(heights[mid+1]<value)left=mid+1;else right=mid;}return left;}
 function scheduleRender(){if(selectionBlocksRender()){renderDeferred=true;return;}if(renderFrame)return;renderFrame=requestAnimationFrame(()=>{renderFrame=0;if(selectionBlocksRender()){renderDeferred=true;return;}render();});}
+function renderLogRow(row,e){
+ const key=JSON.stringify([e.time,e.package,e.process,e.pid,e.tid,e.uid,e.level,e.tag,e.message,e.lines]);
+ row.className='log-row'+(selectedId===e.id?' selected':'');row.style.height=(heights[groups.findIndex(group=>group.id===e.id)+1]-heights[groups.findIndex(group=>group.id===e.id)])+'px';row.dataset.id=e.id;row.title='点击选择日志，再查看上下文';
+ if(row.dataset.key===key)return;
+ row.dataset.key=key;const meta=document.createElement('div');meta.className='log-meta';
+ const stamp=document.createElement('span');stamp.textContent=new Date(e.time).toLocaleTimeString('zh-CN',{hour12:false})+'.'+String(e.time%1000).padStart(3,'0');meta.append(stamp);
+ const pkg=document.createElement('span');pkg.className='pkg';pkg.textContent=e.package||'归属未知';pkg.title=e.package||'无法从 UID 唯一确定包名';meta.append(pkg);
+ const proc=document.createElement('span');proc.textContent=(e.process||'进程未知')+' · '+e.pid+':'+e.tid+' · uid '+e.uid;meta.append(proc);
+ if(e.lines>1){const label=document.createElement('span');label.className='group-label';label.textContent='堆栈组 · '+e.lines+' 行';meta.append(label);}
+ const message=document.createElement('pre');message.className='log-message';const level=document.createElement('span');level.className='level level-'+e.level;level.textContent=e.level+' ';message.append(level);const tag=document.createElement('span');tag.className='tag';tag.textContent=e.tag+'  ';message.append(tag,document.createTextNode(e.message));row.replaceChildren(meta,message);
+}
 function render(){
  const view=$('viewport'),start=Math.max(0,lowerBound(view.scrollTop)-5),end=Math.min(groups.length,lowerBound(view.scrollTop+view.clientHeight)+8);
- const fragment=document.createDocumentFragment();
+ const rows=$('rows'),existing=new Map([...rows.children].map(row=>[row.dataset.id,row])),used=new Set();let position=rows.firstChild;
  for(let i=start;i<end;i++){
-  const e=groups[i],row=document.createElement('div');row.className='log-row'+(selectedId===e.id?' selected':'');row.style.height=(heights[i+1]-heights[i])+'px';row.dataset.id=e.id;row.title='点击选择日志，再查看上下文';
-  const meta=document.createElement('div');meta.className='log-meta';
-  const stamp=document.createElement('span');stamp.textContent=new Date(e.time).toLocaleTimeString('zh-CN',{hour12:false})+'.'+String(e.time%1000).padStart(3,'0');meta.append(stamp);
-  const pkg=document.createElement('span');pkg.className='pkg';pkg.textContent=e.package||'归属未知';pkg.title=e.package||'无法从 UID 唯一确定包名';meta.append(pkg);
-  const proc=document.createElement('span');proc.textContent=(e.process||'进程未知')+' · '+e.pid+':'+e.tid+' · uid '+e.uid;meta.append(proc);
-  if(e.lines>1){const label=document.createElement('span');label.className='group-label';label.textContent='堆栈组 · '+e.lines+' 行';meta.append(label);}
-  row.append(meta);const message=document.createElement('pre');message.className='log-message';
-  const level=document.createElement('span');level.className='level level-'+e.level;level.textContent=e.level+' ';message.append(level);
-  const tag=document.createElement('span');tag.className='tag';tag.textContent=e.tag+'  ';message.append(tag,document.createTextNode(e.message));row.append(message);
-  row.onclick=()=>{if(hasLogSelection()||horizontalScrolling)return;selectedId=e.id;scheduleRender();};fragment.append(row);
+  const e=groups[i],id=String(e.id);let row=existing.get(id);
+  if(!row){row=document.createElement('div');row.onclick=()=>{if(hasLogSelection()||horizontalScrolling)return;selectedId=e.id;scheduleRender();};}
+  renderLogRow(row,e);used.add(id);if(row!==position)rows.insertBefore(row,position);position=row.nextSibling;
  }
- $('rows').style.transform='translateY('+heights[start]+'px)';$('rows').replaceChildren(fragment);
- for(const message of $('rows').querySelectorAll('.log-message'))message.scrollLeft=horizontalOffsets.get(message.parentElement.dataset.id)||0;
+ while(position){const next=position.nextSibling;if(!used.has(position.dataset.id))position.remove();position=next;}
+ rows.style.transform='translateY('+heights[start]+'px)';
+ for(const message of rows.querySelectorAll('.log-message'))message.scrollLeft=horizontalOffsets.get(message.parentElement.dataset.id)||0;
 }
 function updateStats(){const count=groups.reduce((total,g)=>total+g.lines,0);$('stats').textContent='匹配 '+count.toLocaleString()+' 条 / '+groups.length.toLocaleString()+' 组 · 缓存 '+records.length.toLocaleString()+' 条 · '+(cacheBytes/1048576).toFixed(1)+' MB'+(retainedCount?' · 筛选保留 '+retainedCount.toLocaleString()+' 条 · '+(retainedBytes/1048576).toFixed(1)+' MB':'')+(status.dropped?' · 手机已淘汰 '+status.dropped+' 条':'')+(paused?' · 显示已暂停':'');}
 function appList(){
