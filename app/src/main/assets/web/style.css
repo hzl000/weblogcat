@@ -29,3 +29,18 @@ body.log-fullscreen main{padding:0 8px 8px;min-height:0}
 body.log-fullscreen .toolbar{flex-wrap:nowrap;overflow-x:auto;flex-shrink:0;padding:6px 0}
 body.log-fullscreen .toolbar button,body.log-fullscreen .toolbar select{white-space:nowrap;flex-shrink:0}
 body.log-fullscreen #viewport{min-height:0;border:1px solid var(--border);border-radius:8px}
+
+#highlight-control{display:flex;align-items:center;gap:5px;flex:0 1 460px;min-width:220px;height:40px;padding:4px 6px;border:1px solid var(--border);border-radius:7px;background:var(--surface)}
+#highlight-control:focus-within{outline:2px solid var(--accent);outline-offset:1px}
+#highlight-terms{display:flex;align-items:center;gap:4px;flex:1 1 0;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;white-space:nowrap}
+#highlight-terms:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.highlight-chip{display:inline-flex;align-items:center;gap:3px;flex:0 0 auto;padding:2px 3px 2px 5px;border-radius:5px;background:hsl(var(--keyword-hue) 85% 88%);color:hsl(var(--keyword-hue) 80% 20%);font-size:11px;line-height:20px}
+.highlight-chip .keyword-highlight{padding:0;background:transparent;color:inherit}
+.highlight-close{display:grid;place-items:center;width:20px;height:20px;min-width:20px;padding:0;border:0;background:transparent;color:inherit;font-size:16px;line-height:1}
+.highlight-close:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#highlight-input{flex:0 0 132px;width:132px;padding:5px 4px;border:0;background:transparent;font-size:12px;outline:none}
+.keyword-highlight{padding:0 1px;border-radius:2px;background:hsl(var(--keyword-hue) 88% 82%);color:hsl(var(--keyword-hue) 85% 18%);font-weight:700}
+:root[data-theme=dark] .highlight-chip,:root[data-theme=dark] .keyword-highlight{background:hsl(var(--keyword-hue) 55% 28%);color:hsl(var(--keyword-hue) 95% 91%)}
+@media(prefers-color-scheme:dark){:root[data-theme=system] .highlight-chip,:root[data-theme=system] .keyword-highlight{background:hsl(var(--keyword-hue) 55% 28%);color:hsl(var(--keyword-hue) 95% 91%)}}
+@media(max-width:680px){#highlight-control{flex:1 1 100%;min-width:0;width:100%;height:38px}#highlight-input{flex-basis:120px;width:120px}}
+@media (orientation:landscape) and (max-height:500px){#highlight-control{flex:0 0 330px;height:34px}#highlight-input{flex-basis:110px;width:110px}}

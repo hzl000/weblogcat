@@ -4,6 +4,8 @@ const $=id=>document.getElementById(id),auth=location.search, token=new URLSearc
 const endpoint=(path,params={})=>path+'?'+new URLSearchParams({token,...params});
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
 let selected=new Set(read('packages',[])), apps=[],projects=[],activeProject='',records=[],cacheBytes=0,cursor=0,session=null;
+let highlightTerms=read('highlights',[]).filter(item=>item&&typeof item.text==='string'&&item.text.trim()).map((item,index)=>({text:item.text,hue:Number.isFinite(item.hue)?item.hue:(index*137.508)%360}));
+let highlightHueSequence=Math.max(0,Number(read('highlightHueSequence',highlightTerms.length))||0),highlightRevision=0;
 let groups=[],indexedGroups=[],heights=[0],follow=true,paused=false,pauseCursor=Infinity,clearBefore=0,selectedId=0;
 let worker=null,workerBusy=false,workerTimer=null,workerFailed=false,pending=[],job=0,revision=0,now=Date.now(),status={},lastUpdate=0;
 let history=read('history',[]),favorites=read('favorites',[]),frozenGroups=null;
@@ -60,16 +62,24 @@ function indexGroups(){if(selectionBlocksRender()){indexDeferred=true;return;}
  scheduleRender();updateStats();}
 function lowerBound(value,length=groups.length){let left=0,right=length;while(left<right){const mid=(left+right)>>1;if(heights[mid+1]<value)left=mid+1;else right=mid;}return left;}
 function scheduleRender(){if(selectionBlocksRender()){renderDeferred=true;return;}if(renderFrame)return;renderFrame=requestAnimationFrame(()=>{renderFrame=0;if(selectionBlocksRender()){renderDeferred=true;return;}render();});}
-function renderLogRow(row,e){
- const key=JSON.stringify([e.time,e.package,e.process,e.pid,e.tid,e.uid,e.level,e.tag,e.message,e.lines]);
- row.className='log-row'+(selectedId===e.id?' selected':'');row.style.height=(heights[groups.findIndex(group=>group.id===e.id)+1]-heights[groups.findIndex(group=>group.id===e.id)])+'px';row.dataset.id=e.id;row.title='点击选择日志，再查看上下文';
+function highlightedText(value){
+ const fragment=document.createDocumentFragment();
+ for(const part of LogHighlight.segments(String(value),highlightTerms)){
+  if(part.index<0)fragment.append(document.createTextNode(part.text));
+  else{const mark=document.createElement('mark');mark.className='keyword-highlight';mark.style.setProperty('--keyword-hue',highlightTerms[part.index].hue);mark.textContent=part.text;fragment.append(mark);}
+ }
+ return fragment;
+}
+function renderLogRow(row,e,index){
+ const key=JSON.stringify([e.time,e.package,e.process,e.pid,e.tid,e.uid,e.level,e.tag,e.message,e.lines,highlightRevision]);
+ row.className='log-row'+(selectedId===e.id?' selected':'');row.style.height=(heights[index+1]-heights[index])+'px';row.dataset.id=e.id;row.title='点击选择日志，再查看上下文';
  if(row.dataset.key===key)return;
  row.dataset.key=key;const meta=document.createElement('div');meta.className='log-meta';
- const stamp=document.createElement('span');stamp.textContent=new Date(e.time).toLocaleTimeString('zh-CN',{hour12:false})+'.'+String(e.time%1000).padStart(3,'0');meta.append(stamp);
- const pkg=document.createElement('span');pkg.className='pkg';pkg.textContent=e.package||'归属未知';pkg.title=e.package||'无法从 UID 唯一确定包名';meta.append(pkg);
- const proc=document.createElement('span');proc.textContent=(e.process||'进程未知')+' · '+e.pid+':'+e.tid+' · uid '+e.uid;meta.append(proc);
- if(e.lines>1){const label=document.createElement('span');label.className='group-label';label.textContent='堆栈组 · '+e.lines+' 行';meta.append(label);}
- const message=document.createElement('pre');message.className='log-message';const level=document.createElement('span');level.className='level level-'+e.level;level.textContent=e.level+' ';message.append(level);const tag=document.createElement('span');tag.className='tag';tag.textContent=e.tag+'  ';message.append(tag,document.createTextNode(e.message));row.replaceChildren(meta,message);
+ const stamp=document.createElement('span');stamp.append(highlightedText(new Date(e.time).toLocaleTimeString('zh-CN',{hour12:false})+'.'+String(e.time%1000).padStart(3,'0')));meta.append(stamp);
+ const pkg=document.createElement('span');pkg.className='pkg';pkg.append(highlightedText(e.package||'归属未知'));pkg.title=e.package||'无法从 UID 唯一确定包名';meta.append(pkg);
+ const proc=document.createElement('span');proc.append(highlightedText((e.process||'进程未知')+' · '+e.pid+':'+e.tid+' · uid '+e.uid));meta.append(proc);
+ if(e.lines>1){const label=document.createElement('span');label.className='group-label';label.append(highlightedText('堆栈组 · '+e.lines+' 行'));meta.append(label);}
+ const message=document.createElement('pre');message.className='log-message';const level=document.createElement('span');level.className='level level-'+e.level;level.append(highlightedText(e.level+' '));message.append(level);const tag=document.createElement('span');tag.className='tag';tag.append(highlightedText(e.tag+'  '));message.append(tag,highlightedText(e.message));row.replaceChildren(meta,message);
 }
 function render(){
  const view=$('viewport'),start=Math.max(0,lowerBound(view.scrollTop)-5),end=Math.min(groups.length,lowerBound(view.scrollTop+view.clientHeight)+8);
@@ -77,7 +87,7 @@ function render(){
  for(let i=start;i<end;i++){
   const e=groups[i],id=String(e.id);let row=existing.get(id);
   if(!row){row=document.createElement('div');row.onclick=()=>{if(hasLogSelection()||horizontalScrolling)return;selectedId=e.id;scheduleRender();};}
-  renderLogRow(row,e);used.add(id);if(row!==position)rows.insertBefore(row,position);position=row.nextSibling;
+  renderLogRow(row,e,i);used.add(id);if(row!==position)rows.insertBefore(row,position);position=row.nextSibling;
  }
  while(position){const next=position.nextSibling;if(!used.has(position.dataset.id))position.remove();position=next;}
  rows.style.transform='translateY('+heights[start]+'px)';
@@ -100,6 +110,21 @@ function appList(){
  if(!visible.length){const text=document.createElement('p');text.className='app-summary';text.textContent='未找到应用';$('apps').append(text);}
 }
 function selectionChanged(){if(!projects.some(p=>p.code===activeProject&&selected.has(p.package)))activeProject=projects.find(p=>selected.has(p.package))?.code||'';persist('packages',[...selected]);appList();filter(true);}
+function updateHighlightTerms(scrollToEnd=false){
+ const list=$('highlight-terms'),fragment=document.createDocumentFragment();
+ highlightTerms.forEach((term,index)=>{
+  const chip=document.createElement('span');chip.className='highlight-chip';chip.style.setProperty('--keyword-hue',term.hue);const text=document.createElement('span');text.className='keyword-highlight';text.textContent=term.text;
+  const close=document.createElement('button');close.type='button';close.className='highlight-close';close.textContent='×';close.title='移除高亮关键词';close.setAttribute('aria-label','移除高亮关键词 '+term.text);close.onclick=()=>{highlightTerms.splice(index,1);persist('highlights',highlightTerms);highlightRevision++;updateHighlightTerms();scheduleRender();};
+  chip.append(text,close);fragment.append(chip);
+ });
+ list.replaceChildren(fragment);if(scrollToEnd)list.scrollLeft=list.scrollWidth;
+}
+function addHighlight(value){
+ const text=value.trim();if(!text)return;
+ const exists=highlightTerms.some(term=>term.text.toLocaleLowerCase()===text.toLocaleLowerCase());
+ if(!exists){highlightTerms.push({text,hue:(highlightHueSequence++*137.508)%360});persist('highlights',highlightTerms);persist('highlightHueSequence',highlightHueSequence);highlightRevision++;updateHighlightTerms(true);scheduleRender();}
+ $('highlight-input').value='';
+}
 function updateProjectTags(){
  const select=$('project-tags'),project=projects.find(p=>p.code===activeProject&&selected.has(p.package));
  select.replaceChildren(new Option(project?'项目 Tag · '+project.code:'项目 Tag',''));
@@ -160,6 +185,8 @@ $('query').value=read('query','');$('case-sensitive').checked=read('caseSensitiv
 $('query').oninput=()=>{persist('query',$('query').value);suggestions();clearTimeout(queryTimer);queryTimer=setTimeout(()=>filter(true),150);};$('query').onchange=remember;$('query').onkeydown=event=>{if(event.key==='Enter'){remember();filter(true);}};
 $('level').onchange=()=>{persist('level',$('level').value);filter(true);};$('case-sensitive').onchange=()=>{persist('caseSensitive',$('case-sensitive').checked);filter(true);};
 $('history').onchange=()=>{if($('history').value){$('query').value=$('history').value;persist('query',$('query').value);filter(true);}};
+$('highlight-input').onkeydown=event=>{if(event.key==='Enter'){event.preventDefault();addHighlight(event.currentTarget.value);}};
+$('highlight-control').addEventListener('wheel',event=>{const list=$('highlight-terms');if(list.scrollWidth<=list.clientWidth)return;list.scrollLeft+=Math.abs(event.deltaY)>Math.abs(event.deltaX)?event.deltaY:event.deltaX;event.preventDefault();},{passive:false});
 $('project-tags').onchange=()=>{const tag=$('project-tags').value;if(!tag)return;const query=$('query'),term='tag:'+(/[^a-zA-Z0-9_.$:/-]/.test(tag)?JSON.stringify(tag):tag);query.value=[query.value.trim(),term].filter(Boolean).join(' ');persist('query',query.value);suggestions();filter(true);$('project-tags').selectedIndex=0;};
 $('save-query').onclick=()=>{const value=$('query').value.trim();if(!value)return;favorites=favorites.includes(value)?favorites.filter(q=>q!==value):[value,...favorites].slice(0,30);persist('favorites',favorites);$('save-query').textContent=favorites.includes(value)?'★':'☆';remember();updateHistory();};
 $('app-search').oninput=()=>{clearTimeout(appSearchTimer);appSearchTimer=setTimeout(appList,100);};$('system-apps').onchange=()=>{persist('systemApps',$('system-apps').checked);appList();};$('refresh-apps').onclick=()=>loadApps(true);$('deselect').onclick=()=>{selected.clear();selectionChanged();};
@@ -211,4 +238,4 @@ $('log-fullscreen').onclick=async()=>{
 document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('log-fullscreen'))setLogFullscreen(false);});
 $('theme').value=localStorage.getItem('theme')||'system';$('theme').onchange=()=>{document.documentElement.dataset.theme=$('theme').value;localStorage.setItem('theme',$('theme').value);};
 window.addEventListener('resize',scheduleRender);setInterval(()=>{if(status.now){now=status.now+(Date.now()-lastUpdate);filter();}},1000);
-updateHistory();suggestions();filter(true);loadApps();loadProjects();poll();
+updateHistory();suggestions();updateHighlightTerms();filter(true);loadApps();loadProjects();poll();
