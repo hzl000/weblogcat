@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id),auth=location.search, token=new URLSearchParams(auth).get('token')||'';
 const endpoint=(path,params={})=>path+'?'+new URLSearchParams({token,...params});
 const read=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback;}catch{return fallback;}};
-let selected=new Set(read('packages',[])), apps=[],projects=[],activeProject='',records=[],cacheBytes=0,cursor=0,session=null;
+let selected=new Set(read('packages',[])), apps=[],projects=[],records=[],cacheBytes=0,cursor=0,session=null;
 let highlightTerms=read('highlights',[]).filter(item=>item&&typeof item.text==='string'&&item.text.trim()).map((item,index)=>({text:item.text,hue:Number.isFinite(item.hue)?item.hue:(index*137.508)%360}));
 let highlightHueSequence=Math.max(0,Number(read('highlightHueSequence',highlightTerms.length))||0),highlightRevision=0;
 let groups=[],indexedGroups=[],heights=[0],follow=true,paused=false,pauseCursor=Infinity,clearBefore=0,selectedId=0;
@@ -102,14 +102,14 @@ function appList(){
  const fragment=document.createDocumentFragment();
  for(const app of visible){
   const label=document.createElement('label');label.className='app'+(selected.has(app.package)?' selected':'');
-  const box=document.createElement('input');box.type='checkbox';box.checked=selected.has(app.package);box.setAttribute('aria-label',app.package);box.onchange=()=>{if(box.checked){selected.add(app.package);activeProject=projects.find(p=>p.package===app.package)?.code||activeProject;}else selected.delete(app.package);selectionChanged();};
+  const box=document.createElement('input');box.type='checkbox';box.checked=selected.has(app.package);box.setAttribute('aria-label',app.package);box.onchange=()=>{if(box.checked)selected.add(app.package);else selected.delete(app.package);selectionChanged();};
   const icon=document.createElement('img');icon.src=endpoint('/icon',{package:app.package});icon.loading='lazy';icon.alt='';icon.onerror=()=>{icon.style.visibility='hidden';};
   const text=document.createElement('div');text.className='app-text';const name=document.createElement('div');name.className='app-name';name.textContent=app.name;const pkg=document.createElement('div');pkg.className='app-package';pkg.textContent=app.package;text.append(name,pkg);label.append(box,icon,text);fragment.append(label);
  }
  $('apps').replaceChildren(fragment);$('selected-count').textContent=selected.size?'已选 '+selected.size+' 个应用':'全部日志';$('scope').textContent=selected.size?[...selected].join('、'):'全部应用';$('scope').title=$('scope').textContent;updateProjectTags();
  if(!visible.length){const text=document.createElement('p');text.className='app-summary';text.textContent='未找到应用';$('apps').append(text);}
 }
-function selectionChanged(){if(!projects.some(p=>p.code===activeProject&&selected.has(p.package)))activeProject=projects.find(p=>selected.has(p.package))?.code||'';persist('packages',[...selected]);appList();filter(true);}
+function selectionChanged(){persist('packages',[...selected]);appList();filter(true);}
 function updateHighlightTerms(scrollToEnd=false){
  const list=$('highlight-terms'),fragment=document.createDocumentFragment();
  highlightTerms.forEach((term,index)=>{
@@ -126,13 +126,13 @@ function addHighlight(value){
  $('highlight-input').value='';
 }
 function updateProjectTags(){
- const select=$('project-tags'),project=projects.find(p=>p.code===activeProject&&selected.has(p.package));
- select.replaceChildren(new Option(project?'项目 Tag · '+project.code:'项目 Tag',''));
- if(project)for(const item of project.tags)select.add(new Option(item.type+' · '+item.tag,item.tag));
- select.hidden=!project||project.tags.length===0;
+ const select=$('project-tags'),selectedProjects=projects.filter(project=>selected.has(project.package));
+ select.replaceChildren(new Option('项目常用Tag',''));
+ for(const project of selectedProjects)for(const item of project.tags)select.add(new Option(project.code+' · '+item.type+' · '+item.tag,item.tag));
+ select.hidden=!selectedProjects.some(project=>project.tags.length);
 }
 async function loadProjects(){
- try{const response=await fetch(endpoint('/projects.json'));if(!response.ok)throw new Error('项目配置读取失败');projects=await response.json();activeProject=projects.find(p=>selected.has(p.package))?.code||'';appList();}
+ try{const response=await fetch(endpoint('/projects.json'));if(!response.ok)throw new Error('项目配置读取失败');projects=await response.json();appList();}
  catch(error){$('query-error').textContent=error.message;}
 }
 async function loadApps(refresh=false){
