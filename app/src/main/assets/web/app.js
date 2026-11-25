@@ -127,7 +127,7 @@ function addHighlight(value){
 }
 function updateProjectTags(){
  const select=$('project-tags'),selectedProjects=projects.filter(project=>selected.has(project.package));
- select.replaceChildren(new Option('项目常用Tag',''));
+ select.replaceChildren(new Option('项目关键字',''));
  for(const project of selectedProjects)for(const item of project.tags)select.add(new Option(project.code+' · '+item.type+' · '+item.tag,item.tag));
  select.hidden=!selectedProjects.some(project=>project.tags.length);
 }
