@@ -1,0 +1,2110 @@
+[
+  {
+    "code": "ML07",
+    "package": "com.live.videocall2023",
+    "tags": []
+  },
+  {
+    "code": "ML07B",
+    "package": "com.aiart.photoedit",
+    "tags": []
+  },
+  {
+    "code": "ML09",
+    "package": "com.wj.MagicArtAiGeneratorEdit.mi",
+    "tags": []
+  },
+  {
+    "code": "ML09B",
+    "package": "com.wj.MagicArtAiGeneratorEdit.huawei",
+    "tags": []
+  },
+  {
+    "code": "ML09C",
+    "package": "com.sweetai.aigic.proapp",
+    "tags": []
+  },
+  {
+    "code": "ML10",
+    "package": "com.animephotopro.create",
+    "tags": []
+  },
+  {
+    "code": "ML11",
+    "package": "com.fancyaiphoto.aigc",
+    "tags": []
+  },
+  {
+    "code": "ML11B",
+    "package": "com.dreamart.aiphoto.app",
+    "tags": []
+  },
+  {
+    "code": "WS03",
+    "package": "com.novopicapp.creatorios",
+    "tags": []
+  },
+  {
+    "code": "WS04",
+    "package": "com.novopic.creatorapp",
+    "tags": []
+  },
+  {
+    "code": "XZ01",
+    "package": "com.novopic.creatorapp",
+    "tags": []
+  },
+  {
+    "code": "XZ02",
+    "package": "com.novopicapp.creatorios",
+    "tags": []
+  },
+  {
+    "code": "AH02",
+    "package": "com.aihome.android.app",
+    "tags": []
+  },
+  {
+    "code": "AC02",
+    "package": "com.dreamcar.android.app",
+    "tags": []
+  },
+  {
+    "code": "MM02",
+    "package": "com.match.prettygirls2023",
+    "tags": []
+  },
+  {
+    "code": "C701",
+    "package": "com.xygirls.livevideo2023",
+    "tags": []
+  },
+  {
+    "code": "C702",
+    "package": "com.videocall.random2023",
+    "tags": []
+  },
+  {
+    "code": "MG09",
+    "package": "com.filerecovery.exportdelete2024",
+    "tags": []
+  },
+  {
+    "code": "M1143",
+    "package": "com.secureline.vpnprivacy2023",
+    "tags": []
+  },
+  {
+    "code": "M1143B",
+    "package": "com.starsvpn.fastsafetyapp",
+    "tags": []
+  },
+  {
+    "code": "MG07",
+    "package": "com.filevault.restore2023",
+    "tags": []
+  },
+  {
+    "code": "MM04",
+    "package": "com.video.callchat2023",
+    "tags": []
+  },
+  {
+    "code": "M1165",
+    "package": "com.filemanagement.app2023",
+    "tags": []
+  },
+  {
+    "code": "M1165B",
+    "package": "com.meowfast.proxyapp",
+    "tags": []
+  },
+  {
+    "code": "M366",
+    "package": "com.violetvigor.netspeed",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notification_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      }
+    ]
+  },
+  {
+    "code": "M366B",
+    "package": "com.starclean.android",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notification_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_config"
+      }
+    ]
+  },
+  {
+    "code": "M366C",
+    "package": "com.onetap.tool.appandroid",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notification_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "all_report"
+      }
+    ]
+  },
+  {
+    "code": "MM03",
+    "package": "com.live.videocall2023",
+    "tags": []
+  },
+  {
+    "code": "M1170",
+    "package": "com.nusasoftwarehouse.resepmasakdimsum",
+    "tags": []
+  },
+  {
+    "code": "M1170B",
+    "package": "com.ecolightfast.proxyapp",
+    "tags": []
+  },
+  {
+    "code": "M1173",
+    "package": "com.kicauan.burung.gereja.gacor",
+    "tags": []
+  },
+  {
+    "code": "M1173B",
+    "package": "com.cyberbullspeed.proxyapp",
+    "tags": []
+  },
+  {
+    "code": "M1177",
+    "package": "com.penguinswift.proxyapp",
+    "tags": []
+  },
+  {
+    "code": "M1179",
+    "package": "com.velocitynet.byteapp",
+    "tags": []
+  },
+  {
+    "code": "M1174",
+    "package": "com.stablespeed.testapp",
+    "tags": []
+  },
+  {
+    "code": "M1174B",
+    "package": "com.bunnybytes.netapp",
+    "tags": []
+  },
+  {
+    "code": "M1180",
+    "package": "com.companyname.sanirlemu",
+    "tags": []
+  },
+  {
+    "code": "M360",
+    "package": "com.blazeshield.speedapp",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AppFAController"
+      },
+      {
+        "type": "广告",
+        "tag": "AdInstance"
+      },
+      {
+        "type": "埋点",
+        "tag": "AnalysisEvent"
+      }
+    ]
+  },
+  {
+    "code": "PDF17",
+    "package": "com.pdfflowreader.editscan",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NoticeUtils"
+      },
+      {
+        "type": "广告",
+        "tag": "AdsLog"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics_PDFSQ"
+      }
+    ]
+  },
+  {
+    "code": "PDF17B",
+    "package": "com.notespdffff.viescannn",
+    "tags": []
+  },
+  {
+    "code": "M360B",
+    "package": "com.cleanbot.master.manager",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AppFAController"
+      },
+      {
+        "type": "广告",
+        "tag": "AdInstance"
+      }
+    ]
+  },
+  {
+    "code": "PL01",
+    "package": "com.allreader.pdfandroid.app",
+    "tags": []
+  },
+  {
+    "code": "M1186",
+    "package": "com.yarnmeter.netspeed",
+    "tags": []
+  },
+  {
+    "code": "MZ05",
+    "package": "com.bibleinsight.proapp",
+    "tags": []
+  },
+  {
+    "code": "pdf01",
+    "package": "com.htroutine2023.planapp",
+    "tags": []
+  },
+  {
+    "code": "pdf02",
+    "package": "com.aipdfapp2025",
+    "tags": []
+  },
+  {
+    "code": "MH02",
+    "package": "com.easyfastclick.clickerapp",
+    "tags": []
+  },
+  {
+    "code": "M362",
+    "package": "com.easysoft.titsiouine",
+    "tags": []
+  },
+  {
+    "code": "M363",
+    "package": "com.brisksignal.easyproxyapp",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "tag_ads"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "ad_sdk"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdCallbackImp"
+      }
+    ]
+  },
+  {
+    "code": "M363B",
+    "package": "com.pureclean.smartfile.master",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "tag_ads"
+      },
+      {
+        "type": "埋点",
+        "tag": "app_report"
+      }
+    ]
+  },
+  {
+    "code": "PDF25",
+    "package": "com.pilot.pdfreader.scanner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PushGatekeeper"
+      },
+      {
+        "type": "广告",
+        "tag": "AdDisplay"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCore"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "PDF03",
+    "package": "com.bloodapppro904b.com",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyConst"
+      },
+      {
+        "type": "广告",
+        "tag": "MediationManger"
+      },
+      {
+        "type": "广告",
+        "tag": "F"
+      },
+      {
+        "type": "广告",
+        "tag": "u"
+      },
+      {
+        "type": "广告",
+        "tag": "Ads"
+      },
+      {
+        "type": "埋点",
+        "tag": "TraceExt"
+      }
+    ]
+  },
+  {
+    "code": "PDF03C",
+    "package": "com.docuquick.pdfreader.fastscanner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyConst"
+      },
+      {
+        "type": "广告",
+        "tag": "MediationManger"
+      },
+      {
+        "type": "广告",
+        "tag": "F"
+      },
+      {
+        "type": "广告",
+        "tag": "u"
+      },
+      {
+        "type": "广告",
+        "tag": "Ads"
+      },
+      {
+        "type": "埋点",
+        "tag": "TraceExt"
+      }
+    ]
+  },
+  {
+    "code": "PDF16",
+    "package": "com.fluxsoft.pdf.fasteditor",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "PDF04",
+    "package": "com.ReziApp.Queen",
+    "tags": []
+  },
+  {
+    "code": "PDF04B",
+    "package": "com.pdf.masterread.editapp",
+    "tags": []
+  },
+  {
+    "code": "PDF05",
+    "package": "com.yaohuo.xingyu",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AppGrim"
+      },
+      {
+        "type": "广告",
+        "tag": "GrimAdInstance"
+      }
+    ]
+  },
+  {
+    "code": "PDF05B",
+    "package": "com.pdfkit.viewereditor",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AppGrim"
+      },
+      {
+        "type": "广告",
+        "tag": "GrimAdInstance"
+      }
+    ]
+  },
+  {
+    "code": "MG14",
+    "package": "com.photorecover.file",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PushView"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxController"
+      },
+      {
+        "type": "埋点",
+        "tag": "fireEvent"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjust"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjustEvent"
+      }
+    ]
+  },
+  {
+    "code": "MG14B",
+    "package": "com.filerecover.photovideo.android",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PushView"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxController"
+      },
+      {
+        "type": "埋点",
+        "tag": "fireEvent"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjust"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjustEvent"
+      }
+    ]
+  },
+  {
+    "code": "pig",
+    "package": "com.pig.out.brain",
+    "tags": []
+  },
+  {
+    "code": "PDF06",
+    "package": "com.smartpdf.viewer",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "all_report_pdf"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "PDF06B",
+    "package": "com.pdfeditor.docviewer",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "all_report_pdf"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "PDF06C",
+    "package": "com.pdf.reader.swiftconvert",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "all_report_pdf"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "MG16",
+    "package": "com.photorecover.app.proandroid",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "SystemEventMonitor"
+      },
+      {
+        "type": "通知",
+        "tag": "SystemEventMonitorExample"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementManager"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementHelper"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "MG16B",
+    "package": "com.filerecovery.appandroid",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "SystemEventMonitor"
+      },
+      {
+        "type": "通知",
+        "tag": "SystemEventMonitorExample"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementManager"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementHelper"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "PDF07",
+    "package": "com.pdfview.allapp",
+    "tags": []
+  },
+  {
+    "code": "PDF07C",
+    "package": "com.pdfconvert.readeditor",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "WAY"
+      },
+      {
+        "type": "广告",
+        "tag": "AdmobHandler"
+      },
+      {
+        "type": "埋点",
+        "tag": "LogEnum"
+      }
+    ]
+  },
+  {
+    "code": "PDF07B",
+    "package": "com.powerpdf.readsignconvert",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "WAY"
+      },
+      {
+        "type": "广告",
+        "tag": "AdmobHandler"
+      },
+      {
+        "type": "埋点",
+        "tag": "LogEnum"
+      }
+    ]
+  },
+  {
+    "code": "MG18",
+    "package": "com.quickphoto.fileapp.andriod",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "FAKeepLog"
+      },
+      {
+        "type": "广告",
+        "tag": "GMAdInstance"
+      }
+    ]
+  },
+  {
+    "code": "MG18B",
+    "package": "com.quickdoc.filerescuepro",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "FAKeepLog"
+      },
+      {
+        "type": "广告",
+        "tag": "GMAdInstance"
+      },
+      {
+        "type": "埋点",
+        "tag": "FAKeepLog"
+      }
+    ]
+  },
+  {
+    "code": "PDF08",
+    "package": "com.pdfstudio.editconvert",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PushConst"
+      },
+      {
+        "type": "广告",
+        "tag": "GoogleManager"
+      }
+    ]
+  },
+  {
+    "code": "PDF08B",
+    "package": "com.pdfsmooth.edit",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PushConst"
+      },
+      {
+        "type": "广告",
+        "tag": "GoogleManager"
+      }
+    ]
+  },
+  {
+    "code": "MG22",
+    "package": "com.promrecover.app.andriod",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "WinInstance/RecallNotices"
+      },
+      {
+        "type": "广告",
+        "tag": "NPAdManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "AnalysisInstance"
+      }
+    ]
+  },
+  {
+    "code": "PDF09",
+    "package": "com.pdfmanager.proreader",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "PDF09B",
+    "package": "com.pdfmax.signer",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "PDF09C",
+    "package": "com.c.smartview.pdfpro",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_manager"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "MG19",
+    "package": "com.filecover.scuephoto.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyPrint"
+      },
+      {
+        "type": "广告",
+        "tag": "AdAlonePrint"
+      }
+    ]
+  },
+  {
+    "code": "PDF10B",
+    "package": "com.pdf.viewercreator",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "pending_action"
+      },
+      {
+        "type": "广告",
+        "tag": "AdmobHandler"
+      }
+    ]
+  },
+  {
+    "code": "PDF10",
+    "package": "com.allreader.pdfedit",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "pending_action"
+      },
+      {
+        "type": "广告",
+        "tag": "AdmobHandler"
+      },
+      {
+        "type": "埋点",
+        "tag": "EventEnum"
+      }
+    ]
+  },
+  {
+    "code": "MG23",
+    "package": "com.photorecover.finddelete.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "MgesSystemEventMonitorExample"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "PDF11",
+    "package": "com.quickdoc.pdfreader",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PDF11SystemEvent"
+      },
+      {
+        "type": "广告",
+        "tag": "AdPlacementManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "PDf11AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "PDF11B",
+    "package": "com.first.pdfreader",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PDF11BSystemEvent"
+      },
+      {
+        "type": "广告",
+        "tag": "AdPlacementManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "MG20",
+    "package": "com.media.purerestore.data.recovery",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AliveTAG"
+      },
+      {
+        "type": "广告",
+        "tag": "ApplovinInstance"
+      },
+      {
+        "type": "埋点",
+        "tag": "TrackInstance"
+      }
+    ]
+  },
+  {
+    "code": "MG20B",
+    "package": "com.media.quickrecover.data.recovery",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AliveTAG"
+      },
+      {
+        "type": "广告",
+        "tag": "ApplovinInstance"
+      },
+      {
+        "type": "埋点",
+        "tag": "TrackInstance"
+      }
+    ]
+  },
+  {
+    "code": "PDF12",
+    "package": "com.utilityeditor.pdfreader",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "noti_tg"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      }
+    ]
+  },
+  {
+    "code": "PDF12B",
+    "package": "com.simplepdf.editorviewer",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "noti_tg"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      }
+    ]
+  },
+  {
+    "code": "PDF12C",
+    "package": "com.pdf.lite.filemanager",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "noti_tg"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjust_report"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "MG17",
+    "package": "com.deeprecover.android.fileapp",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "SqSystemEventMonitorUtils"
+      },
+      {
+        "type": "广告",
+        "tag": "SQAdPlacementManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "MG17B",
+    "package": "com.recoverymax.android.fileapp",
+    "tags": []
+  },
+  {
+    "code": "UP01",
+    "package": "com.easysoft.bmiapp",
+    "tags": []
+  },
+  {
+    "code": "PDF13",
+    "package": "com.pdfdocs.reader.allinone",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Notification_SYSTEM"
+      },
+      {
+        "type": "广告",
+        "tag": "AD_SYSTEM"
+      },
+      {
+        "type": "埋点",
+        "tag": "ANALYTICS_SYSTEM"
+      }
+    ]
+  },
+  {
+    "code": "PDF13B",
+    "package": "com.pdfviewer.readscanedit",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Notification_SYSTEM"
+      },
+      {
+        "type": "广告",
+        "tag": "AD_SYSTEM"
+      },
+      {
+        "type": "埋点",
+        "tag": "ANALYTICS_SYSTEM"
+      }
+    ]
+  },
+  {
+    "code": "MG21",
+    "package": "com.recover.scan.one",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "FA"
+      },
+      {
+        "type": "通知",
+        "tag": "ReminderFlow"
+      },
+      {
+        "type": "广告",
+        "tag": "AdDisplayFlow"
+      },
+      {
+        "type": "埋点",
+        "tag": "EventReporter"
+      }
+    ]
+  },
+  {
+    "code": "PDF14",
+    "package": "com.allfiletools.pdfreader",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "AppLiveHelper"
+      },
+      {
+        "type": "广告",
+        "tag": "AdManager"
+      }
+    ]
+  },
+  {
+    "code": "PDF14B",
+    "package": "com.pdfdoc.reader.pro",
+    "tags": []
+  },
+  {
+    "code": "MG24",
+    "package": "com.easyrecover.allrestore.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyController"
+      },
+      {
+        "type": "通知",
+        "tag": "ShelfNotice"
+      },
+      {
+        "type": "广告",
+        "tag": "AdHybrid"
+      },
+      {
+        "type": "广告",
+        "tag": "AdAnalysisHelper"
+      },
+      {
+        "type": "广告",
+        "tag": "AdPicker"
+      },
+      {
+        "type": "广告",
+        "tag": "AdWaterfall"
+      },
+      {
+        "type": "广告",
+        "tag": "AdAnalysis"
+      },
+      {
+        "type": "广告",
+        "tag": "ShelfAds"
+      }
+    ]
+  },
+  {
+    "code": "M361",
+    "package": "com.junkfiles.cleaner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      }
+    ]
+  },
+  {
+    "code": "M361B",
+    "package": "com.cleanerpro.easyphone",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      }
+    ]
+  },
+  {
+    "code": "PDF22",
+    "package": "com.pdfall.readerinone.suiteone.android",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Breath_FFFF"
+      },
+      {
+        "type": "广告",
+        "tag": "Breath_AD"
+      },
+      {
+        "type": "埋点",
+        "tag": "Breath_REPORT"
+      }
+    ]
+  },
+  {
+    "code": "AS01",
+    "package": "com.aivoice.change.android",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      }
+    ]
+  },
+  {
+    "code": "M370B",
+    "package": "com.quickcleaner.phone.pro",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "SystemEventMonitor"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementManager"
+      }
+    ]
+  },
+  {
+    "code": "UP02",
+    "package": "com.easyqr.scanner.app.android",
+    "tags": []
+  },
+  {
+    "code": "M368",
+    "package": "com.planetarynetmeter.speedapp",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifySender"
+      },
+      {
+        "type": "广告",
+        "tag": "ToponController"
+      }
+    ]
+  },
+  {
+    "code": "M368B",
+    "package": "com.swiftclean.phone.managerpro",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifySender"
+      },
+      {
+        "type": "广告",
+        "tag": "ToponController"
+      }
+    ]
+  },
+  {
+    "code": "MG15",
+    "package": "com.easyphoto.coverandriod.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjust_report"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "MG15B",
+    "package": "com.smartrecovery.andriod.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "adjust_report"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "M364",
+    "package": "com.phonesweep.cleanmanager",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "SendNoticeTag/NoticeCenter"
+      },
+      {
+        "type": "广告",
+        "tag": "AdTag/AdController"
+      },
+      {
+        "type": "埋点",
+        "tag": "ReportPoint"
+      }
+    ]
+  },
+  {
+    "code": "WEN01",
+    "package": "com.Learnai.english",
+    "tags": []
+  },
+  {
+    "code": "PDF20",
+    "package": "com.flupdf.reader.scan",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "PDF_FFFF"
+      },
+      {
+        "type": "广告",
+        "tag": "PDF_AD"
+      },
+      {
+        "type": "埋点",
+        "tag": "PDF_REPORT"
+      }
+    ]
+  },
+  {
+    "code": "PDF20B",
+    "package": "com.docswift.pdfreader.viewer",
+    "tags": [
+      {
+        "type": "广告",
+        "tag": "AdCallBackImpl"
+      }
+    ]
+  },
+  {
+    "code": "M365",
+    "package": "com.freshpro.cleaner.photo.manage",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "MslwSystemEventMonitorUtils"
+      },
+      {
+        "type": "广告",
+        "tag": "MSLWAdPlacementManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "AdjustAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "LC01",
+    "package": "com.familylink.locationtrack",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag/NotifyRules"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallback"
+      },
+      {
+        "type": "埋点",
+        "tag": "tttwww"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "LC01B",
+    "package": "com.phonelink.gpslocate",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag/NotifyRules"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallback"
+      },
+      {
+        "type": "埋点",
+        "tag": "tttwww"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "LC01C",
+    "package": "com.loctionccsafe.link",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_tag/NotifyRules"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallback"
+      },
+      {
+        "type": "埋点",
+        "tag": "tttwww"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "LC02",
+    "package": "com.gpstracker.locationtrack",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotificationFlow"
+      },
+      {
+        "type": "通知",
+        "tag": "NotifyRules"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "广告",
+        "tag": "OnFullAdCallBack"
+      },
+      {
+        "type": "埋点",
+        "tag": "AnalyticsTrack"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "LC02B",
+    "package": "com.app.family.locator.safe",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotificationFlow"
+      },
+      {
+        "type": "通知",
+        "tag": "NotifyRules"
+      },
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "广告",
+        "tag": "OnFullAdCallBack"
+      },
+      {
+        "type": "埋点",
+        "tag": "AnalyticsTrack"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "LC03",
+    "package": "com.linkpoint.gpstracker",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notification"
+      },
+      {
+        "type": "通知",
+        "tag": "FlocNotificationFlow"
+      },
+      {
+        "type": "广告",
+        "tag": "adCallback"
+      },
+      {
+        "type": "广告",
+        "tag": "FlocAdCallback"
+      },
+      {
+        "type": "埋点",
+        "tag": "FlocAnalytics"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "LC03B",
+    "package": "com.linkgps.familylocator.tracker",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notification"
+      },
+      {
+        "type": "通知",
+        "tag": "FlocNotificationFlow"
+      },
+      {
+        "type": "广告",
+        "tag": "adCallback"
+      },
+      {
+        "type": "广告",
+        "tag": "FlocAdCallback"
+      },
+      {
+        "type": "埋点",
+        "tag": "FlocAnalytics"
+      },
+      {
+        "type": "埋点",
+        "tag": "report_tag"
+      }
+    ]
+  },
+  {
+    "code": "PDF26",
+    "package": "com.readerview.appandroid.organize",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NTYLOG"
+      },
+      {
+        "type": "广告",
+        "tag": "ADLOG"
+      },
+      {
+        "type": "广告",
+        "tag": "SeaLionAdEngine"
+      },
+      {
+        "type": "埋点",
+        "tag": "NORMAL"
+      }
+    ]
+  },
+  {
+    "code": "PDF15",
+    "package": "com.swiftpdf.reader.converter",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "PDF15B",
+    "package": "com.sparkped.reader.editorapp",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "PDF15C",
+    "package": "com.pdfreader.swift.scanner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "notify_send"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "M367",
+    "package": "com.maxcleantech.phonemaxcleaner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "CheckNotificationSendLimit"
+      },
+      {
+        "type": "广告",
+        "tag": "PrintAD"
+      }
+    ]
+  },
+  {
+    "code": "PDF18",
+    "package": "com.pro.pdfreader.core",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "push_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "AdManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "Events"
+      }
+    ]
+  },
+  {
+    "code": "UP03",
+    "package": "com.swift.light.fasttorchapp",
+    "tags": []
+  },
+  {
+    "code": "PDF19",
+    "package": "com.great.pdfvision.core",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Widdile"
+      },
+      {
+        "type": "广告",
+        "tag": "Widdile_AD"
+      },
+      {
+        "type": "埋点",
+        "tag": "Widdile_REPORT"
+      }
+    ]
+  },
+  {
+    "code": "PDF21",
+    "package": "com.anydoc.pdfreader.editor.android",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "CoatLiveKeepBack"
+      },
+      {
+        "type": "广告",
+        "tag": "SeaLionAdEngine"
+      },
+      {
+        "type": "埋点",
+        "tag": "PydocAnalytics"
+      }
+    ]
+  },
+  {
+    "code": "PDF23",
+    "package": "com.documentstudio.editor",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyEvent"
+      },
+      {
+        "type": "广告",
+        "tag": "SEALIONADENGINE"
+      },
+      {
+        "type": "埋点",
+        "tag": "basicApp"
+      }
+    ]
+  },
+  {
+    "code": "PDF24",
+    "package": "com.sphere.pdf.doctools",
+    "tags": []
+  },
+  {
+    "code": "PDF27",
+    "package": "com.openpdf.android.documents",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyConst"
+      },
+      {
+        "type": "广告",
+        "tag": "MediationManger"
+      },
+      {
+        "type": "埋点",
+        "tag": "TraceExt"
+      }
+    ]
+  },
+  {
+    "code": "PDF28",
+    "package": "com.viewew.docpdfed.pdfreader.android",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "NotifyConst"
+      },
+      {
+        "type": "广告",
+        "tag": "MediationManger"
+      },
+      {
+        "type": "埋点",
+        "tag": "TraceExt"
+      }
+    ]
+  },
+  {
+    "code": "PDF29",
+    "package": "com.share.pdf.proo",
+    "tags": []
+  },
+  {
+    "code": "PDF30",
+    "package": "com.pdfreader.view.work.andriod",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "KeepTrace"
+      },
+      {
+        "type": "广告",
+        "tag": "AdTrace"
+      },
+      {
+        "type": "埋点",
+        "tag": "TrackHelper"
+      }
+    ]
+  },
+  {
+    "code": "M369",
+    "package": "com.crfastpro.pulse.utility",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "MsljSystemEventMonitorUtils"
+      },
+      {
+        "type": "广告",
+        "tag": "MSLJAdPlacementManager"
+      },
+      {
+        "type": "埋点",
+        "tag": "BI"
+      },
+      {
+        "type": "埋点",
+        "tag": "eISQmMV"
+      }
+    ]
+  },
+  {
+    "code": "M370",
+    "package": "com.quickclean.phonecleaner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "SystemEventMonitor"
+      },
+      {
+        "type": "广告",
+        "tag": "MaxAdPlacementManager"
+      }
+    ]
+  },
+  {
+    "code": "M371",
+    "package": "com.spaceace.file.organizer",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "debug_log_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_log_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "debug_log_tag"
+      }
+    ]
+  },
+  {
+    "code": "M372",
+    "package": "com.pure.spacesweeper",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "debugLog"
+      },
+      {
+        "type": "广告",
+        "tag": "powerad"
+      }
+    ]
+  },
+  {
+    "code": "M373",
+    "package": "com.deepclear.boost.cleaner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "DeppClear"
+      },
+      {
+        "type": "广告",
+        "tag": "DeppAds"
+      },
+      {
+        "type": "埋点",
+        "tag": "DeppClear_report"
+      }
+    ]
+  },
+  {
+    "code": "M373B",
+    "package": "com.maxcleanup.phone.cleaner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "DeppClear"
+      },
+      {
+        "type": "广告",
+        "tag": "DeppAds"
+      },
+      {
+        "type": "埋点",
+        "tag": "DeppClear_report"
+      }
+    ]
+  },
+  {
+    "code": "M375",
+    "package": "com.vortex.sweep.easycleaner.pro",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Z0"
+      },
+      {
+        "type": "广告",
+        "tag": "Z1"
+      }
+    ]
+  },
+  {
+    "code": "M376",
+    "package": "com.expert.phoneclean.fastclean",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Clean_TAG"
+      },
+      {
+        "type": "广告",
+        "tag": "Clean_AD"
+      }
+    ]
+  },
+  {
+    "code": "M377",
+    "package": "com.ace.sweepclean.spacecleaner",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "d_tag"
+      },
+      {
+        "type": "广告",
+        "tag": "ad_tag"
+      },
+      {
+        "type": "埋点",
+        "tag": "m_tag"
+      }
+    ]
+  },
+  {
+    "code": "M374",
+    "package": "com.liftsweep.phone.cleaner.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "Solus_TAG"
+      },
+      {
+        "type": "广告",
+        "tag": "Solus_AD"
+      },
+      {
+        "type": "埋点",
+        "tag": "Solus_Report"
+      }
+    ]
+  },
+  {
+    "code": "M378",
+    "package": "com.ace.eliteclean.toolkit.app",
+    "tags": []
+  },
+  {
+    "code": "UP06",
+    "package": "com.qrtoolbot.scanner",
+    "tags": []
+  },
+  {
+    "code": "UP05",
+    "package": "com.welloraai.daily.wellcoach.android",
+    "tags": []
+  },
+  {
+    "code": "UP07",
+    "package": "com.soundmeter.decibel.app",
+    "tags": []
+  },
+  {
+    "code": "UP08",
+    "package": "com.expensemate.budget",
+    "tags": []
+  },
+  {
+    "code": "UP09",
+    "package": "com.pdfpage.manage",
+    "tags": []
+  },
+  {
+    "code": "UP10",
+    "package": "com.calories.vs.tool",
+    "tags": []
+  },
+  {
+    "code": "UP11",
+    "package": "com.bluepocket.expense",
+    "tags": []
+  },
+  {
+    "code": "WQ01",
+    "package": "com.bloodphealth2023.app",
+    "tags": [
+      {
+        "type": "通知",
+        "tag": "TomNotice"
+      },
+      {
+        "type": "广告",
+        "tag": "TomAds"
+      },
+      {
+        "type": "埋点",
+        "tag": "TomEvent"
+      }
+    ]
+  },
+  {
+    "code": "WG01",
+    "package": "com.sweetsprint.candy.app",
+    "tags": [
+      {
+        "type": "广告",
+        "tag": "AdCallbackImp"
+      },
+      {
+        "type": "埋点",
+        "tag": "firebase_report"
+      }
+    ]
+  },
+  {
+    "code": "WN01",
+    "package": "com.facehealth.wnone.app",
+    "tags": []
+  },
+  {
+    "code": "W301",
+    "package": "com.cleanphone.android.com",
+    "tags": []
+  }
+]
